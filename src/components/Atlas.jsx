@@ -176,7 +176,7 @@ const Atlas = () => {
   }, [timelineIdx]);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#050505', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '100%', height: '100%', background: '#050505', position: 'relative', overflow: 'hidden' }}>
       
       {/* 1. 3D 地球 */}
       <Globe
@@ -234,10 +234,11 @@ const Atlas = () => {
       </div>
 
       {/* 3. 右侧垂直时间轴 (Timeline Sidebar) - 修复交互问题 */}
+      {/* 3. 右侧垂直时间轴 - 优化了边距 */}
       <div style={{ 
         position: 'absolute', 
         top: '50%', 
-        right: '40px', 
+        right: '20px',  /* 改小一点，或者保持40px */
         transform: 'translateY(-50%)', 
         zIndex: 10,
         display: 'flex',
@@ -245,7 +246,8 @@ const Atlas = () => {
         gap: '15px',
         maxHeight: '80vh',
         overflowY: 'auto',
-        pointerEvents: 'none' // 容器本身不拦截点击
+        pointerEvents: 'none',
+        paddingRight: '10px' /* 增加一点右侧内边距 */
       }}>
         {TRAVEL_DATA.map((item, index) => (
           <div 
