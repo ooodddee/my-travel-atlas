@@ -176,7 +176,16 @@ const Atlas = () => {
   }, [timelineIdx]);
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#050505', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ 
+        position: 'fixed', /* 强制固定，无视父元素 */
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: '#050505', 
+        overflow: 'hidden',
+        zIndex: 0 /* 确保在最底层，不遮挡其他可能存在的元素 */
+      }}>
       
       {/* 1. 3D 地球 */}
       <Globe
