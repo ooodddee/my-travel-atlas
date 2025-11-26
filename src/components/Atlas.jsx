@@ -162,18 +162,19 @@ const Atlas = () => {
   }, [timelineIdx]);
 
   // --- 视角自动跟随 ---
+  // --- 视角自动跟随 ---
   useEffect(() => {
     if (globeEl.current) {
       const currentTrip = TRAVEL_DATA[timelineIdx];
       
-      // 复杂的运镜：先拉高，再对准，再拉近
+      // 让它一开始就飞到当前地点
       globeEl.current.pointOfView({
         lat: currentTrip.lat,
         lng: currentTrip.lng,
-        altitude: 2.0 // 高度
-      }, 1500); // 1.5秒飞过去
+        altitude: 2.0 
+      }, 1000); // 1秒飞过去
     }
-  }, [timelineIdx]);
+  }, [timelineIdx]); // 初始化时 timelineIdx 是 0，所以会自动执行一次
 
   return (
     <div style={{ 
