@@ -75,7 +75,7 @@ const TRAVEL_DATA = [
       zh: "正在努力回忆中。。。", 
       en: "Trying hard to recall..." 
     }, 
-    aiTags: ["Hometown", "Start", "Warm"], 
+    aiTags: ["Hometown"], 
     moodColor: "#ff9f43" 
   },
   { 
@@ -150,6 +150,20 @@ const TRAVEL_DATA = [
   },
   { 
     id: 6, 
+    lat: 23.1291, 
+    lng: 113.2644, 
+    date: "2023.12", 
+    city: { zh: "广州", en: "Guangzhou" },
+    country: { zh: "中国", en: "China", code: "🇨🇳" },
+    description: { 
+      zh: "正在努力回忆中。。。", 
+      en: "Trying hard to recall..." 
+    }, 
+    aiTags: ["City", "Culture"], 
+    moodColor: "#ee5a6f" 
+  },
+  { 
+    id: 7, 
     lat: 14.3532, 
     lng: 100.5676, 
     date: "2024.08", 
@@ -163,7 +177,7 @@ const TRAVEL_DATA = [
     moodColor: "#d4a574" 
   },
   { 
-    id: 7, 
+    id: 8, 
     lat: 47.6062, 
     lng: -122.3321, 
     date: "2024.08", 
@@ -177,7 +191,7 @@ const TRAVEL_DATA = [
     moodColor: "#54a0ff" 
   },
   { 
-    id: 8, 
+    id: 9, 
     lat: 49.2827, 
     lng: -123.1207, 
     date: "2024.12.29", 
@@ -191,7 +205,7 @@ const TRAVEL_DATA = [
     moodColor: "#c8d6e5" 
   },
   { 
-    id: 9, 
+    id: 10, 
     lat: 22.0964, 
     lng: -159.5261, 
     date: "2025.05.19", 
@@ -205,7 +219,7 @@ const TRAVEL_DATA = [
     moodColor: "#1dd1a1" 
   },
   { 
-    id: 10, 
+    id: 11, 
     lat: 21.3069, 
     lng: -157.8583, 
     date: "2025.06.17", 
@@ -219,7 +233,7 @@ const TRAVEL_DATA = [
     moodColor: "#ff9f43" 
   },
   { 
-    id: 11, 
+    id: 12, 
     lat: 19.5429, 
     lng: -155.6659, 
     date: "2025.06.29", 
@@ -240,7 +254,7 @@ const Atlas = () => {
   const [selectedLoc, setSelectedLoc] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [timelineIdx, setTimelineIdx] = useState(0);
-  const [lang, setLang] = useState('zh');
+  const [lang, setLang] = useState('en'); // 默认英文
   
   // 新增状态
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
