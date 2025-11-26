@@ -78,6 +78,24 @@ npm run preview
 | 📊 **Statistics** | Click 📊 icon | View travel statistics |
 | ▶️ **Auto-Play** | Click ▶️ icon | Auto-cycle through cities every 2s |
 | 🌐 **Language** | Click 中/EN button | Switch interface language |
+| ⌨️ **Keyboard Shortcuts** | Press `?` key | Show keyboard shortcuts panel (desktop only) |
+
+### ⌨️ Keyboard Shortcuts (Desktop Only)
+
+Press `?` to view all shortcuts, or use these common ones:
+
+| Shortcut | Action |
+|----------|--------|
+| `←` `→` or `H` `L` | Navigate cities (Vim-style supported) |
+| `Space` / `Enter` | Open travel diary |
+| `/` | Focus search box |
+| `S` | Toggle statistics |
+| `T` | Toggle theme |
+| `P` | Toggle auto-play |
+| `E` | Switch language |
+| `Esc` | Close modals |
+
+📖 **Full documentation**: See [KEYBOARD_SHORTCUTS.md](./KEYBOARD_SHORTCUTS.md)
 
 ---
 

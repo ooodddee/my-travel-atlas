@@ -2,6 +2,39 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Globe from 'react-globe.gl';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// 键盘快捷键显示组件
+const KeyboardShortcut = ({ keys, description, theme }) => (
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    alignItems: 'center',
+    marginBottom: '6px'
+  }}>
+    <div style={{ display: 'flex', gap: '4px' }}>
+      {keys.map((key, idx) => (
+        <kbd 
+          key={idx}
+          style={{
+            background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+            border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'}`,
+            borderRadius: '4px',
+            padding: '2px 6px',
+            fontSize: '11px',
+            fontFamily: 'monospace',
+            minWidth: '24px',
+            textAlign: 'center'
+          }}
+        >
+          {key}
+        </kbd>
+      ))}
+    </div>
+    <span style={{ color: theme === 'dark' ? '#ccc' : '#666', marginLeft: '10px' }}>
+      {description}
+    </span>
+  </div>
+);
+
 // 添加 CSS 动画样式
 const styleSheet = document.createElement("style");
 styleSheet.textContent = `
@@ -214,6 +247,7 @@ const Atlas = () => {
   const [showStats, setShowStats] = useState(false);
   const [theme, setTheme] = useState('dark'); // 'dark' or 'light'
   const [showTip, setShowTip] = useState(true); // 使用提示
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false); // 键盘快捷键帮助
   const autoPlayIntervalRef = useRef(null);
   
   // 响应式设计 - 媒体查询
@@ -304,7 +338,94 @@ const Atlas = () => {
     };
   }, [isAutoPlaying]);
 
-  // --- 新增状态：存储重叠的地点列表 ---
+  // --- 键盘快捷键支持 ---
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // 如果正在输入搜索框，不触发快捷键
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+      
+      switch(e.key) {
+        case 'ArrowLeft':
+        case 'h': // Vim 风格
+          e.preventDefault();
+          setTimelineIdx(prev => Math.max(0, prev - 1));
+          break;
+          
+        case 'ArrowRight':
+        case 'l': // Vim 风格
+          e.preventDefault();
+          setTimelineIdx(prev => Math.min(TRAVEL_DATA.length - 1, prev + 1));
+          break;
+          
+        case 'ArrowUp':
+        case 'k': // Vim 风格
+          e.preventDefault();
+          setTimelineIdx(0); // 跳到第一个
+          break;
+          
+        case 'ArrowDown':
+        case 'j': // Vim 风格
+          e.preventDefault();
+          setTimelineIdx(TRAVEL_DATA.length - 1); // 跳到最后一个
+          break;
+          
+        case ' ':
+        case 'Enter':
+          e.preventDefault();
+          setSelectedLoc(TRAVEL_DATA[timelineIdx]);
+          break;
+          
+        case 'Escape':
+          e.preventDefault();
+          setSelectedLoc(null);
+          setShowStats(false);
+          setShowTip(false);
+          break;
+          
+        case '/':
+          e.preventDefault();
+          document.querySelector('input[type="text"]')?.focus();
+          break;
+          
+        case 's':
+        case 'S':
+          e.preventDefault();
+          setShowStats(prev => !prev);
+          break;
+          
+        case 't':
+        case 'T':
+          e.preventDefault();
+          setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+          break;
+          
+        case 'p':
+        case 'P':
+          e.preventDefault();
+          setIsAutoPlaying(prev => !prev);
+          break;
+          
+        case 'e':
+        case 'E':
+          e.preventDefault();
+          setLang(prev => prev === 'zh' ? 'en' : 'zh');
+          break;
+          
+        case '?':
+          e.preventDefault();
+          setShowKeyboardHelp(prev => !prev);
+          break;
+          
+        default:
+          break;
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [timelineIdx]);  // --- 新增状态：存储重叠的地点列表 ---
   const [overlappingLocs, setOverlappingLocs] = useState(null); 
   
   // 阈值：2度以内我们视为重叠（约220公里）
@@ -515,6 +636,26 @@ const Atlas = () => {
           >
             {isAutoPlaying ? '⏸️' : '▶️'}
           </button>
+          
+          {/* 键盘快捷键帮助按钮 (仅桌面端显示) */}
+          {!isMobile && (
+            <button 
+              onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
+              style={{
+                background: showKeyboardHelp ? 'rgba(138,43,226,0.3)' : 'rgba(255,255,255,0.1)', 
+                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
+                color: theme === 'dark' ? 'white' : '#2c3e50', 
+                padding: isMobile ? '4px 8px' : '5px 10px', 
+                borderRadius: '4px', 
+                cursor: 'pointer',
+                fontSize: '18px',
+                transition: 'all 0.3s'
+              }}
+              title={lang === 'zh' ? '键盘快捷键 (按 ? 键)' : 'Keyboard Shortcuts (Press ?)'}
+            >
+              ⌨️
+            </button>
+          )}
         </div>
 
         <div style={{ position: 'relative', pointerEvents: 'auto', width: isMobile ? '100%' : 'auto' }}>
@@ -692,6 +833,181 @@ const Atlas = () => {
           )}
         </AnimatePresence>
       </div>
+      
+      {/* 键盘快捷键帮助面板 (仅桌面端) */}
+      <AnimatePresence>
+        {showKeyboardHelp && !isMobile && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            style={{
+              position: 'fixed',
+              top: '50%',
+              right: '20px',
+              transform: 'translateY(-50%)',
+              zIndex: 150,
+              background: theme === 'dark' ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.95)',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'}`,
+              borderRadius: '12px',
+              padding: '20px',
+              backdropFilter: 'blur(10px)',
+              color: theme === 'dark' ? 'white' : '#2c3e50',
+              minWidth: '280px',
+              maxHeight: '70vh',
+              overflowY: 'auto',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '15px',
+              paddingBottom: '10px',
+              borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`
+            }}>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
+                ⌨️ {lang === 'zh' ? '键盘快捷键' : 'Keyboard Shortcuts'}
+              </h3>
+              <button
+                onClick={() => setShowKeyboardHelp(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: theme === 'dark' ? '#999' : '#666',
+                  cursor: 'pointer',
+                  fontSize: '20px',
+                  padding: 0
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div style={{ fontSize: '13px', lineHeight: '1.8' }}>
+              {/* 导航 */}
+              <div style={{ marginBottom: '15px' }}>
+                <div style={{ 
+                  color: theme === 'dark' ? '#ffd700' : '#4a90e2', 
+                  fontWeight: 'bold', 
+                  marginBottom: '8px',
+                  fontSize: '14px'
+                }}>
+                  {lang === 'zh' ? '🧭 导航' : '🧭 Navigation'}
+                </div>
+                <KeyboardShortcut 
+                  keys={['←', 'H']} 
+                  description={lang === 'zh' ? '上一个城市' : 'Previous city'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['→', 'L']} 
+                  description={lang === 'zh' ? '下一个城市' : 'Next city'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['↑', 'K']} 
+                  description={lang === 'zh' ? '第一个城市' : 'First city'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['↓', 'J']} 
+                  description={lang === 'zh' ? '最后一个城市' : 'Last city'} 
+                  theme={theme}
+                />
+              </div>
+              
+              {/* 操作 */}
+              <div style={{ marginBottom: '15px' }}>
+                <div style={{ 
+                  color: theme === 'dark' ? '#ffd700' : '#4a90e2', 
+                  fontWeight: 'bold', 
+                  marginBottom: '8px',
+                  fontSize: '14px'
+                }}>
+                  {lang === 'zh' ? '📝 操作' : '📝 Actions'}
+                </div>
+                <KeyboardShortcut 
+                  keys={['Space', 'Enter']} 
+                  description={lang === 'zh' ? '打开旅行日记' : 'Open diary'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['Esc']} 
+                  description={lang === 'zh' ? '关闭弹窗' : 'Close modal'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['/']} 
+                  description={lang === 'zh' ? '聚焦搜索框' : 'Focus search'} 
+                  theme={theme}
+                />
+              </div>
+              
+              {/* 切换 */}
+              <div style={{ marginBottom: '15px' }}>
+                <div style={{ 
+                  color: theme === 'dark' ? '#ffd700' : '#4a90e2', 
+                  fontWeight: 'bold', 
+                  marginBottom: '8px',
+                  fontSize: '14px'
+                }}>
+                  {lang === 'zh' ? '🔄 切换' : '🔄 Toggle'}
+                </div>
+                <KeyboardShortcut 
+                  keys={['S']} 
+                  description={lang === 'zh' ? '统计面板' : 'Statistics'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['T']} 
+                  description={lang === 'zh' ? '日夜主题' : 'Theme'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['P']} 
+                  description={lang === 'zh' ? '自动播放' : 'Auto-play'} 
+                  theme={theme}
+                />
+                <KeyboardShortcut 
+                  keys={['E']} 
+                  description={lang === 'zh' ? '中英切换' : 'Language'} 
+                  theme={theme}
+                />
+              </div>
+              
+              {/* 帮助 */}
+              <div>
+                <div style={{ 
+                  color: theme === 'dark' ? '#ffd700' : '#4a90e2', 
+                  fontWeight: 'bold', 
+                  marginBottom: '8px',
+                  fontSize: '14px'
+                }}>
+                  {lang === 'zh' ? '❓ 帮助' : '❓ Help'}
+                </div>
+                <KeyboardShortcut 
+                  keys={['?']} 
+                  description={lang === 'zh' ? '显示/隐藏此面板' : 'Show/hide this panel'} 
+                  theme={theme}
+                />
+              </div>
+            </div>
+            
+            <div style={{
+              marginTop: '15px',
+              paddingTop: '10px',
+              borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              fontSize: '11px',
+              color: '#999',
+              textAlign: 'center'
+            }}>
+              {lang === 'zh' ? '提示：支持 Vim 风格按键 (H J K L)' : 'Tip: Vim-style keys supported (H J K L)'}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* B. 右侧时间轴 - 可点击打开日记 (移动端隐藏) */}
       {!isMobile && (
