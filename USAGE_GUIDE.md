@@ -3,6 +3,7 @@
 ## 如何为地点添加照片
 
 ### 方法 1: 使用在线图片链接
+
 ```javascript
 const TRAVEL_DATA = [
   {
@@ -11,29 +12,28 @@ const TRAVEL_DATA = [
     lng: 102.7183,
     date: "2019.10",
     city: { zh: "昆明", en: "Kunming" },
-    description: { 
-      zh: "家乡的起点，温暖的回忆。", 
-      en: "The starting point of home, warm memories." 
+    description: {
+      zh: "家乡的起点，温暖的回忆。",
+      en: "The starting point of home, warm memories.",
     },
     aiTags: ["Hometown", "Start", "Warm"],
     moodColor: "#ff9f43",
     // 🆕 添加照片数组
     photos: [
       "https://images.unsplash.com/photo-1559827260-dc66d52bef19",
-      "https://images.unsplash.com/photo-1508804185872-d7badad00f7d"
-    ]
-  }
+      "https://images.unsplash.com/photo-1508804185872-d7badad00f7d",
+    ],
+  },
 ];
 ```
 
 ### 方法 2: 使用本地照片
+
 1. 在 `public/photos/` 目录下放置照片
 2. 引用相对路径：
+
 ```javascript
-photos: [
-  "/photos/kunming-1.jpg",
-  "/photos/kunming-2.jpg"
-]
+photos: ["/photos/kunming-1.jpg", "/photos/kunming-2.jpg"];
 ```
 
 ## 推荐的免费图床服务
@@ -44,18 +44,20 @@ photos: [
 
 ## 控制按钮说明
 
-| 按钮 | 功能 | 快捷键 |
-|------|------|--------|
-| 中/EN | 切换中英文 | - |
-| ☀️/🌙 | 切换主题 | - |
-| 📊 | 显示/隐藏统计 | - |
-| ▶️/⏸️ | 自动播放/暂停 | - |
+| 按钮  | 功能              | 快捷键 |
+| ----- | ----------------- | ------ |
+| 中/EN | 切换中英文        | -      |
+| ☀️/🌙 | 切换主题          | -      |
+| 📊    | 显示/隐藏统计     | -      |
+| ▶️/⏸️ | 自动播放/暂停     | -      |
 | ← / → | 上一个/下一个地点 | 计划中 |
 
 ## 自定义配置
 
 ### 调整自动播放速度
+
 在 `Atlas.jsx` 中找到：
+
 ```javascript
 setInterval(() => {
   // ...
@@ -63,16 +65,18 @@ setInterval(() => {
 ```
 
 ### 修改统计计算
+
 在 `stats` useMemo 中自定义你的统计逻辑：
+
 ```javascript
 const stats = useMemo(() => {
   // 添加你自己的统计逻辑
   const myCustomStat = TRAVEL_DATA.filter(/* ... */).length;
-  
+
   return {
     totalTrips: TRAVEL_DATA.length,
     // ... 其他统计
-    myCustomStat // 你的自定义统计
+    myCustomStat, // 你的自定义统计
   };
 }, []);
 ```
@@ -80,15 +84,18 @@ const stats = useMemo(() => {
 ## 常见问题
 
 **Q: 照片显示不出来？**
+
 - 检查图片 URL 是否有效
 - 确保 URL 支持 CORS（跨域访问）
 - 使用 HTTPS 链接而不是 HTTP
 
 **Q: 如何隐藏某些地点？**
+
 - 在 `TRAVEL_DATA` 中添加 `hidden: true` 字段
 - 然后过滤：`const visibleData = TRAVEL_DATA.filter(loc => !loc.hidden)`
 
 **Q: 能否添加视频？**
+
 - 目前只支持图片
 - 可以考虑在 description 中添加视频链接
 

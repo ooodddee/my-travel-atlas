@@ -24,22 +24,25 @@ src/
 ### 1. **国家数据管理** (`src/data/countries.js`)
 
 **功能**：
+
 - 集中管理国家信息（中英文名称、旗帜、大陆）
 - 提供 `getCountry()` 工具函数
 
 **示例**：
+
 ```javascript
-import { COUNTRIES, getCountry } from '../data/countries.js';
+import { COUNTRIES, getCountry } from "../data/countries.js";
 
 // 使用国家常量
 const china = COUNTRIES.CHINA;
 // { zh: "中国", en: "China", code: "🇨🇳", continent: "Asia" }
 
 // 或使用工具函数
-const usa = getCountry('USA');
+const usa = getCountry("USA");
 ```
 
 **优势**：
+
 - ✅ 避免重复硬编码国家信息
 - ✅ 统一国家数据格式
 - ✅ 便于添加新国家
@@ -50,10 +53,12 @@ const usa = getCountry('USA');
 ### 2. **旅行数据管理** (`src/data/travelData.js`)
 
 **功能**：
+
 - 导出 `TRAVEL_DATA` 数组（13 个旅行记录）
 - 提供 6 个实用工具函数
 
 **数据结构**：
+
 ```javascript
 {
   id: 0,                                    // 唯一标识
@@ -71,25 +76,26 @@ const usa = getCountry('USA');
 
 **工具函数**：
 
-| 函数 | 用途 | 示例 |
-|------|------|------|
-| `getTravelById(id)` | 根据 ID 获取数据 | `getTravelById(5)` |
-| `searchByCity(name)` | 城市名搜索 | `searchByCity("Bangkok")` |
-| `filterByCountry(name)` | 国家筛选 | `filterByCountry("Thailand")` |
-| `filterByYear(year)` | 年份筛选 | `filterByYear(2023)` |
-| `getUniqueCountries()` | 获取所有国家 | 返回去重的国家列表 |
-| `getUniqueYears()` | 获取所有年份 | 返回排序的年份数组 |
+| 函数                    | 用途             | 示例                          |
+| ----------------------- | ---------------- | ----------------------------- |
+| `getTravelById(id)`     | 根据 ID 获取数据 | `getTravelById(5)`            |
+| `searchByCity(name)`    | 城市名搜索       | `searchByCity("Bangkok")`     |
+| `filterByCountry(name)` | 国家筛选         | `filterByCountry("Thailand")` |
+| `filterByYear(year)`    | 年份筛选         | `filterByYear(2023)`          |
+| `getUniqueCountries()`  | 获取所有国家     | 返回去重的国家列表            |
+| `getUniqueYears()`      | 获取所有年份     | 返回排序的年份数组            |
 
 **使用示例**：
+
 ```javascript
-import { 
-  TRAVEL_DATA, 
-  filterByCountry, 
-  getUniqueYears 
-} from '../data/travelData.js';
+import {
+  TRAVEL_DATA,
+  filterByCountry,
+  getUniqueYears,
+} from "../data/travelData.js";
 
 // 获取所有泰国的旅行记录
-const thailandTrips = filterByCountry('Thailand');
+const thailandTrips = filterByCountry("Thailand");
 console.log(thailandTrips.length); // 5
 
 // 获取所有旅行年份
@@ -102,6 +108,7 @@ console.log(years); // ['2019', '2023', '2024', '2025']
 ### 3. **组件简化** (`src/components/Atlas.jsx`)
 
 **改进前**：
+
 ```javascript
 // 硬编码 200+ 行数据
 const TRAVEL_DATA = [
@@ -116,8 +123,9 @@ const Atlas = () => {
 ```
 
 **改进后**：
+
 ```javascript
-import { TRAVEL_DATA } from '../data/travelData.js';
+import { TRAVEL_DATA } from "../data/travelData.js";
 
 const Atlas = () => {
   // 直接使用导入的数据
@@ -126,6 +134,7 @@ const Atlas = () => {
 ```
 
 **代码行数对比**：
+
 - ✅ Atlas.jsx: **1535 行** → **1330 行** （减少 200+ 行）
 - ✅ 主要逻辑代码占比从 85% 提升到 100%
 - ✅ 数据修改无需触碰组件代码
@@ -135,27 +144,31 @@ const Atlas = () => {
 ## 🚀 未来扩展 | Future Enhancements
 
 ### 添加新城市
+
 只需编辑 `src/data/travelData.js`：
+
 ```javascript
 export const TRAVEL_DATA = [
   // ... 现有数据
-  { 
-    id: 13, 
-    lat: 48.8566, 
-    lng: 2.3522, 
-    date: "2026.03", 
+  {
+    id: 13,
+    lat: 48.8566,
+    lng: 2.3522,
+    date: "2026.03",
     city: { zh: "巴黎", en: "Paris" },
     country: COUNTRIES.FRANCE, // 需要先添加到 countries.js
-    description: { zh: "浪漫之都", en: "City of Love" }, 
-    aiTags: ["Art", "Romance"], 
+    description: { zh: "浪漫之都", en: "City of Love" },
+    aiTags: ["Art", "Romance"],
     moodColor: "#ff6b81",
-    photos: ["paris1.jpg", "paris2.jpg"] // 新增照片
-  }
+    photos: ["paris1.jpg", "paris2.jpg"], // 新增照片
+  },
 ];
 ```
 
 ### 添加新国家
+
 编辑 `src/data/countries.js`：
+
 ```javascript
 export const COUNTRIES = {
   // ... 现有国家
@@ -163,26 +176,24 @@ export const COUNTRIES = {
     zh: "法国",
     en: "France",
     code: "🇫🇷",
-    continent: "Europe"
-  }
+    continent: "Europe",
+  },
 };
 ```
 
 ### 高级查询功能
+
 可以轻松添加新的工具函数：
+
 ```javascript
 // 按标签筛选
 export const filterByTag = (tag) => {
-  return TRAVEL_DATA.filter(item => 
-    item.aiTags.includes(tag)
-  );
+  return TRAVEL_DATA.filter((item) => item.aiTags.includes(tag));
 };
 
 // 按大陆筛选
 export const filterByContinent = (continent) => {
-  return TRAVEL_DATA.filter(item => 
-    item.country.continent === continent
-  );
+  return TRAVEL_DATA.filter((item) => item.country.continent === continent);
 };
 
 // 获取最近的 N 次旅行
@@ -196,16 +207,20 @@ export const getRecentTrips = (count = 5) => {
 ## 📊 性能优化 | Performance
 
 ### 数据缓存
+
 由于数据是静态导入，React 会自动缓存：
+
 - ✅ 只在首次加载时解析
 - ✅ 后续渲染直接引用内存中的对象
 - ✅ 无额外网络请求
 
 ### Tree Shaking
+
 工具函数按需导入：
+
 ```javascript
 // 只导入需要的函数，未使用的会被 tree-shaking
-import { filterByYear, getUniqueCountries } from '../data/travelData.js';
+import { filterByYear, getUniqueCountries } from "../data/travelData.js";
 ```
 
 ---
@@ -213,6 +228,7 @@ import { filterByYear, getUniqueCountries } from '../data/travelData.js';
 ## ✅ 质量保证 | Quality Assurance
 
 ### 代码检查
+
 ```bash
 # 检查语法错误
 npm run dev
@@ -222,12 +238,17 @@ npm run build
 ```
 
 ### 测试数据完整性
-```javascript
-import { TRAVEL_DATA, getUniqueCountries } from './data/travelData.js';
 
-console.log(`Total trips: ${TRAVEL_DATA.length}`);        // 13
-console.log(`Countries: ${getUniqueCountries().length}`);  // 4
-console.log(`All IDs unique: ${new Set(TRAVEL_DATA.map(t => t.id)).size === TRAVEL_DATA.length}`); // true
+```javascript
+import { TRAVEL_DATA, getUniqueCountries } from "./data/travelData.js";
+
+console.log(`Total trips: ${TRAVEL_DATA.length}`); // 13
+console.log(`Countries: ${getUniqueCountries().length}`); // 4
+console.log(
+  `All IDs unique: ${
+    new Set(TRAVEL_DATA.map((t) => t.id)).size === TRAVEL_DATA.length
+  }`
+); // true
 ```
 
 ---
@@ -235,14 +256,17 @@ console.log(`All IDs unique: ${new Set(TRAVEL_DATA.map(t => t.id)).size === TRAV
 ## 📝 最佳实践 | Best Practices
 
 1. **数据与逻辑分离**
+
    - ✅ 数据文件只包含数据和工具函数
    - ✅ 组件文件专注于 UI 和交互逻辑
 
 2. **一致的数据格式**
+
    - ✅ 所有城市数据遵循相同结构
    - ✅ 使用 COUNTRIES 常量避免拼写错误
 
 3. **可扩展性**
+
    - ✅ 添加新数据无需修改组件代码
    - ✅ 工具函数易于扩展和测试
 
@@ -254,15 +278,16 @@ console.log(`All IDs unique: ${new Set(TRAVEL_DATA.map(t => t.id)).size === TRAV
 
 ## 🎯 总结 | Summary
 
-| 指标 | 改进前 | 改进后 | 提升 |
-|------|--------|--------|------|
-| **代码行数** | 1535 行 | 1330 行 | ⬇️ 13% |
-| **数据维护** | 混在组件中 | 独立文件 | ✅ 易维护 |
-| **可扩展性** | 低 | 高 | ✅ 工具函数 |
-| **可读性** | 中 | 高 | ✅ 清晰分离 |
-| **复用性** | 无 | 高 | ✅ 可导出 |
+| 指标         | 改进前     | 改进后   | 提升        |
+| ------------ | ---------- | -------- | ----------- |
+| **代码行数** | 1535 行    | 1330 行  | ⬇️ 13%      |
+| **数据维护** | 混在组件中 | 独立文件 | ✅ 易维护   |
+| **可扩展性** | 低         | 高       | ✅ 工具函数 |
+| **可读性**   | 中         | 高       | ✅ 清晰分离 |
+| **复用性**   | 无         | 高       | ✅ 可导出   |
 
 **关键优势**：
+
 - 🎯 **代码更清晰**：组件专注于 UI，数据独立管理
 - 🚀 **维护更简单**：修改数据无需触碰组件代码
 - 📦 **扩展更容易**：添加工具函数和新数据更方便

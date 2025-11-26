@@ -3,12 +3,12 @@
   -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
 }
 
-body { 
-  margin: 0; 
-  padding: 0; 
-  width: 100vw; 
-  height: 100vh; 
-  overflow: hidden; 
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   background: #000;
   /* 禁止移动端双击缩放 */
   touch-action: manipulation;

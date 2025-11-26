@@ -6,25 +6,25 @@
   --color-primary-start: #667eea;
   --color-primary-end: #764ba2;
   --color-primary-glow: rgba(102, 126, 234, 0.4);
-  
+
   /* Secondary - Emerald */
   --color-secondary-start: #1dd1a1;
   --color-secondary-end: #10ac84;
   --color-secondary-glow: rgba(29, 209, 161, 0.3);
-  
+
   /* Accent - Sunset */
   --color-accent-start: #ff6b6b;
   --color-accent-end: #ee5a6f;
   --color-accent-glow: rgba(255, 107, 107, 0.3);
-  
+
   /* Info - Sky */
   --color-info-start: #48dbfb;
   --color-info-end: #0abde3;
-  
+
   /* Warning - Gold */
   --color-warning: #feca57;
   --color-warning-glow: rgba(254, 202, 87, 0.3);
-  
+
   /* Glass Effects */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-bg-hover: rgba(255, 255, 255, 0.08);
@@ -33,38 +33,38 @@
   --glass-shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
   --glass-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.2);
   --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.3);
-  
+
   /* Typography Scale */
-  --font-size-xs: 0.75rem;    /* 12px - captions */
-  --font-size-sm: 0.875rem;   /* 14px - body */
-  --font-size-base: 1rem;     /* 16px - base */
-  --font-size-lg: 1.125rem;   /* 18px - subtitle */
-  --font-size-xl: 1.5rem;     /* 24px - heading */
-  --font-size-2xl: 1.75rem;   /* 28px - large heading */
-  --font-size-3xl: 2.25rem;   /* 36px - hero */
-  
+  --font-size-xs: 0.75rem; /* 12px - captions */
+  --font-size-sm: 0.875rem; /* 14px - body */
+  --font-size-base: 1rem; /* 16px - base */
+  --font-size-lg: 1.125rem; /* 18px - subtitle */
+  --font-size-xl: 1.5rem; /* 24px - heading */
+  --font-size-2xl: 1.75rem; /* 28px - large heading */
+  --font-size-3xl: 2.25rem; /* 36px - hero */
+
   /* Font Weights */
   --font-light: 300;
   --font-regular: 400;
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
-  
+
   /* Spacing Scale */
-  --space-xs: 0.25rem;   /* 4px */
-  --space-sm: 0.5rem;    /* 8px */
-  --space-md: 1rem;      /* 16px */
-  --space-lg: 1.5rem;    /* 24px */
-  --space-xl: 2rem;      /* 32px */
-  --space-2xl: 3rem;     /* 48px */
-  
+  --space-xs: 0.25rem; /* 4px */
+  --space-sm: 0.5rem; /* 8px */
+  --space-md: 1rem; /* 16px */
+  --space-lg: 1.5rem; /* 24px */
+  --space-xl: 2rem; /* 32px */
+  --space-2xl: 3rem; /* 48px */
+
   /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-full: 9999px;
-  
+
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);

@@ -4,35 +4,35 @@
 
 ## 🧭 Navigation
 
-| Shortcut | Description |
-|----------|-------------|
+| Shortcut   | Description   |
+| ---------- | ------------- |
 | `←` or `H` | Previous city |
-| `→` or `L` | Next city |
-| `↑` or `K` | First city |
-| `↓` or `J` | Last city |
+| `→` or `L` | Next city     |
+| `↑` or `K` | First city    |
+| `↓` or `J` | Last city     |
 
 ## 📝 Actions
 
-| Shortcut | Description |
-|----------|-------------|
-| `Space` or `Enter` | Open travel diary for current city |
-| `Esc` | Close all modals (diary, keyboard help) |
-| `/` | Focus search box |
+| Shortcut           | Description                             |
+| ------------------ | --------------------------------------- |
+| `Space` or `Enter` | Open travel diary for current city      |
+| `Esc`              | Close all modals (diary, keyboard help) |
+| `/`                | Focus search box                        |
 
 ## 🔄 Toggle Features
 
-| Shortcut | Description |
-|----------|-------------|
-| `S` | Toggle statistics panel |
-| `T` | Toggle theme (dark/light) |
-| `P` | Toggle auto-play mode |
-| `E` | Switch language (中文/English) |
+| Shortcut | Description                    |
+| -------- | ------------------------------ |
+| `S`      | Toggle statistics panel        |
+| `T`      | Toggle theme (dark/light)      |
+| `P`      | Toggle auto-play mode          |
+| `E`      | Switch language (中文/English) |
 
 ## ❓ Help
 
-| Shortcut | Description |
-|----------|-------------|
-| `?` | Show/hide keyboard shortcuts panel |
+| Shortcut | Description                        |
+| -------- | ---------------------------------- |
+| `?`      | Show/hide keyboard shortcuts panel |
 
 ## 💡 Tips
 
@@ -67,27 +67,29 @@
 ## 🔧 Implementation Details
 
 ### Event Handler
+
 ```javascript
 useEffect(() => {
   const handleKeyPress = (e) => {
     // Ignore shortcuts when typing in input fields
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    
-    switch(e.key) {
-      case 'ArrowLeft':
-      case 'h':
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+    switch (e.key) {
+      case "ArrowLeft":
+      case "h":
         // Navigate to previous city
         break;
       // ... other cases
     }
   };
-  
-  window.addEventListener('keydown', handleKeyPress);
-  return () => window.removeEventListener('keydown', handleKeyPress);
-}, [timelineIdx, /* other dependencies */]);
+
+  window.addEventListener("keydown", handleKeyPress);
+  return () => window.removeEventListener("keydown", handleKeyPress);
+}, [timelineIdx /* other dependencies */]);
 ```
 
 ### UI Component
+
 - Located at fixed position (right side, vertically centered)
 - Responsive to window size changes
 - Scrollable content for smaller screens

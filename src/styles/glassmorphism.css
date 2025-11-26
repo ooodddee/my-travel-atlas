@@ -9,18 +9,18 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  
+
   /* Transparent Background - Show starfield */
   background: transparent;
-  
+
   /* Layout - Split Left & Right */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   /* Breathing Room */
   padding: 24px 40px;
-  
+
   /* Transition */
   transition: all var(--transition-base);
 }
@@ -35,21 +35,22 @@
 /* Epic Title Styles */
 .epic-title-en {
   /* Typography */
-  font-family: 'Montserrat', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Montserrat", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 3px;
-  
+
   /* Color */
-  color: #FFFFFF;
-  
+  color: #ffffff;
+
   /* No margin */
   margin: 0;
-  
+
   /* Text glow effect */
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  
+
   /* Smooth transition */
   transition: text-shadow var(--transition-base);
 }
@@ -60,20 +61,21 @@
 
 .epic-title-zh {
   /* Modern Chinese Sans-Serif */
-  font-family: 'PingFang SC', 'Source Han Sans CN', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+  font-family: "PingFang SC", "Source Han Sans CN", "Microsoft YaHei",
+    "Noto Sans CJK SC", sans-serif;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 2px;
-  
+
   /* Color */
-  color: #FFFFFF;
-  
+  color: #ffffff;
+
   /* No margin */
   margin: 0;
-  
+
   /* Text glow effect */
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  
+
   /* Smooth transition */
   transition: text-shadow var(--transition-base);
 }
@@ -87,10 +89,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .lang-option {
@@ -105,12 +107,12 @@
 }
 
 .lang-option.active {
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 600;
 }
 
 .lang-option:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
@@ -132,20 +134,27 @@
   height: 40px;
   background: transparent;
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  transition: all var(--transition-base);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   padding: 0;
 }
 
-/* Hover Glow Effect */
+/* Force all SVG icons to be white */
+.minimalist-icon svg {
+  color: #ffffff;
+  stroke: #ffffff;
+  fill: none;
+}
+
+/* Hover Glow Effect - Scale + White Glow */
 .minimalist-icon:hover {
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
   transform: scale(1.1);
 }
 
@@ -153,9 +162,14 @@
   transform: scale(0.95);
 }
 
-/* Active State - Stronger Glow */
+/* Active State - Stronger Glow (Purple) */
 .minimalist-icon.active {
-  filter: drop-shadow(0 0 16px rgba(102, 126, 234, 1));
+  filter: drop-shadow(0 0 12px rgba(102, 126, 234, 1));
+}
+
+.minimalist-icon.active svg {
+  color: rgba(102, 126, 234, 1);
+  stroke: rgba(102, 126, 234, 1);
 }
 
 /* Search Container - Minimalist */
@@ -179,20 +193,27 @@
   height: 40px;
   background: transparent;
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  transition: all var(--transition-base);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: absolute;
   left: 0;
   z-index: 2;
 }
 
+/* Force search icon SVG to be white */
+.minimalist-search-icon svg {
+  color: #ffffff;
+  stroke: #ffffff;
+  fill: none;
+}
+
 .minimalist-search-icon:hover {
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
   transform: scale(1.1);
 }
 
@@ -203,9 +224,9 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   padding: 0 40px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 14px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   outline: none;
   transition: all var(--transition-base);
   opacity: 0;
@@ -241,9 +262,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-fast);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   pointer-events: none;
+}
+
+/* Force close icon SVG to be white */
+.minimalist-search-close svg {
+  color: rgba(255, 255, 255, 0.6);
+  stroke: rgba(255, 255, 255, 0.6);
+  fill: none;
 }
 
 .minimalist-search-expanded .minimalist-search-close {
@@ -252,8 +280,14 @@
 }
 
 .minimalist-search-close:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+  transform: scale(1.1);
+}
+
+.minimalist-search-close:hover svg {
+  color: #ffffff;
+  stroke: #ffffff;
 }
 
 /* SVG Icon Styles - White Outline */
@@ -272,27 +306,27 @@
   .immersive-navbar {
     padding: 16px 20px;
   }
-  
+
   .epic-title-en {
     font-size: 18px;
     letter-spacing: 2px;
   }
-  
+
   .epic-title-zh {
     font-size: 17px;
     letter-spacing: 1px;
   }
-  
+
   .navbar-actions {
     gap: 16px;
   }
-  
+
   .minimalist-icon {
     width: 36px;
     height: 36px;
     font-size: 18px;
   }
-  
+
   .minimalist-search-expanded {
     width: 200px;
   }
@@ -304,24 +338,24 @@
     flex-wrap: wrap;
     gap: 12px;
   }
-  
+
   .navbar-brand {
     gap: 12px;
   }
-  
+
   .epic-title-en {
     font-size: 16px;
     letter-spacing: 1.5px;
   }
-  
+
   .epic-title-zh {
     font-size: 15px;
   }
-  
+
   .navbar-actions {
     gap: 12px;
   }
-  
+
   .minimalist-search-expanded {
     width: 150px;
   }
@@ -340,28 +374,27 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  
+
   /* Glassmorphism */
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
-  
+
   /* Border */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  
+
   /* Shadow */
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.4),
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  
+
   /* Layout */
   display: flex;
   align-items: center;
   gap: 24px;
   padding: 12px 24px;
   min-height: 60px;
-  
+
   /* Transition */
   transition: all var(--transition-base);
 }
@@ -369,14 +402,14 @@
 .vision-navbar:hover {
   background: rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.5),
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Logo */
 .vision-logo {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter",
+    "Segoe UI", sans-serif;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -423,7 +456,7 @@
 }
 
 .vision-icon-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.1);
@@ -448,14 +481,14 @@
 /* Active state */
 .vision-icon-btn.active {
   color: white;
-  box-shadow: 
-    0 0 20px var(--color-primary-glow),
+  box-shadow: 0 0 20px var(--color-primary-glow),
     inset 0 0 20px var(--color-primary-glow);
 }
 
 .vision-icon-btn.active::before {
-  background: linear-gradient(135deg, 
-    var(--color-primary-start), 
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-start),
     var(--color-primary-end)
   );
   opacity: 0.3;
@@ -509,7 +542,8 @@
   padding: 0 40px 0 40px;
   color: white;
   font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
+    sans-serif;
   outline: none;
   transition: all var(--transition-base);
   opacity: 0;
@@ -569,7 +603,7 @@
   color: white;
   font-size: 12px;
   font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all var(--transition-base);
@@ -597,21 +631,21 @@
     gap: 12px;
     border-radius: 16px;
   }
-  
+
   .vision-logo {
     font-size: 16px;
   }
-  
+
   .vision-icon-btn {
     width: 32px;
     height: 32px;
     font-size: 16px;
   }
-  
+
   .vision-search-expanded {
     width: 200px;
   }
-  
+
   .vision-divider {
     display: none;
   }
@@ -622,15 +656,15 @@
     gap: 8px;
     padding: 8px 12px;
   }
-  
+
   .vision-logo {
     font-size: 14px;
   }
-  
+
   .vision-icon-group {
     gap: 4px;
   }
-  
+
   .vision-search-expanded {
     width: 150px;
   }
@@ -687,7 +721,7 @@
 }
 
 .glass-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -961,7 +995,7 @@
 }
 
 .glass-timeline-item::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -1148,22 +1182,37 @@
 }
 
 .deep-space-bg::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(29, 209, 161, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(255, 107, 107, 0.02) 0%, transparent 50%);
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(102, 126, 234, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(29, 209, 161, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 20%,
+      rgba(255, 107, 107, 0.02) 0%,
+      transparent 50%
+    );
   animation: cosmicDrift 60s linear infinite;
 }
 
 @keyframes cosmicDrift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  100% { transform: translate(10%, 10%) rotate(360deg); }
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(10%, 10%) rotate(360deg);
+  }
 }
 
 /* ============================================
@@ -1175,16 +1224,16 @@
   .glass-panel {
     border-radius: var(--radius-md);
   }
-  
+
   .glass-modal {
     max-width: 95vw;
     border-radius: var(--radius-lg);
   }
-  
+
   .glass-search {
     max-width: 100%;
   }
-  
+
   .glass-stats {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-sm);

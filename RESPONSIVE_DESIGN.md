@@ -9,16 +9,19 @@
 ## 📊 断点设置 (Breakpoints)
 
 ### 🔸 移动端 (Mobile)
+
 - **宽度**: ≤ 768px
 - **典型设备**: iPhone, Android 手机
 - **特性**: 垂直布局，隐藏侧边栏
 
 ### 🔸 平板 (Tablet)
+
 - **宽度**: 769px - 1024px
 - **典型设备**: iPad, Android 平板
 - **特性**: 混合布局，保留核心功能
 
 ### 🔸 桌面 (Desktop)
+
 - **宽度**: > 1024px
 - **典型设备**: 笔记本电脑，台式机
 - **特性**: 完整布局，所有功能可见
@@ -30,6 +33,7 @@
 ### 1️⃣ **顶部标题栏**
 
 #### 移动端 (≤ 768px)
+
 ```jsx
 - 位置: top: 15px, left: 15px, right: 15px
 - 标题字体: 20px
@@ -38,6 +42,7 @@
 ```
 
 #### 平板 (769-1024px)
+
 ```jsx
 - 位置: top: 40px, left: 40px
 - 标题字体: 24px
@@ -46,6 +51,7 @@
 ```
 
 #### 桌面 (> 1024px)
+
 ```jsx
 - 位置: top: 40px, left: 40px
 - 标题字体: 28px
@@ -58,6 +64,7 @@
 ### 2️⃣ **搜索框**
 
 #### 移动端
+
 ```jsx
 - 宽度: 100% (全宽)
 - 内边距: 12px 16px 12px 42px
@@ -67,6 +74,7 @@
 ```
 
 #### 桌面
+
 ```jsx
 - 宽度: 320px (固定)
 - 内边距: 14px 20px 14px 48px
@@ -76,6 +84,7 @@
 ```
 
 **特点**:
+
 - ✅ Focus 动画保留
 - ✅ 毛玻璃效果
 - ✅ 清除按钮 (有内容时显示)
@@ -85,16 +94,19 @@
 ### 3️⃣ **右侧时间轴**
 
 #### 移动端
+
 ```jsx
 ❌ 完全隐藏 (通过 {!isMobile && <Timeline />})
 ```
 
 **原因**:
+
 - 移动端屏幕太小，时间轴会遮挡地球
 - 用户主要通过底部控制栏导航
 - 保持界面简洁
 
 #### 平板/桌面
+
 ```jsx
 ✅ 显示
 - 平板: right: 10px, gap: 12px
@@ -106,6 +118,7 @@
 ### 4️⃣ **底部控制栏**
 
 #### 移动端
+
 ```jsx
 - 位置: bottom: 20px, left: 15px, right: 15px
 - 宽度: 100% (全宽)
@@ -119,6 +132,7 @@
 ```
 
 #### 桌面
+
 ```jsx
 - 位置: bottom: 40px, left: 50%, transform: translateX(-50%)
 - 宽度: auto (居中)
@@ -136,6 +150,7 @@
 ### 5️⃣ **日记弹窗 (Modal)**
 
 #### 移动端
+
 ```jsx
 - 布局: 全屏 (top: 0, left: 0, right: 0, bottom: 0)
 - 宽度: 100%
@@ -148,6 +163,7 @@
 ```
 
 #### 平板
+
 ```jsx
 - 布局: 居中 (transform: translate(-50%, -50%))
 - 宽度: 90%
@@ -158,6 +174,7 @@
 ```
 
 #### 桌面
+
 ```jsx
 - 布局: 居中
 - 宽度: 450px / 550px (取决于是否有照片)
@@ -173,6 +190,7 @@
 ### 6️⃣ **使用提示浮窗**
 
 #### 移动端
+
 ```jsx
 - 位置: bottom: 100px, left: 15px, right: 15px
 - 宽度: 100%
@@ -185,6 +203,7 @@
 ```
 
 #### 桌面
+
 ```jsx
 - 位置: bottom: 120px, left: 50%, transform: translateX(-50%)
 - 最大宽度: 400px
@@ -201,6 +220,7 @@
 ## 🎯 用户体验优化
 
 ### ✅ **触摸优化**
+
 ```css
 * {
   -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
@@ -213,9 +233,10 @@ body {
 ```
 
 ### ✅ **滚动条优化**
+
 ```css
 ::-webkit-scrollbar {
-  width: 6px;  /* 更细的滚动条 */
+  width: 6px; /* 更细的滚动条 */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -225,6 +246,7 @@ body {
 ```
 
 ### ✅ **盒模型统一**
+
 ```css
 * {
   box-sizing: border-box; /* 统一使用 border-box */
@@ -235,37 +257,41 @@ body {
 
 ## 📊 响应式变化对比表
 
-| 元素 | 移动端 (≤768px) | 平板 (769-1024px) | 桌面 (>1024px) |
-|------|----------------|------------------|---------------|
-| **标题** | 20px | 24px | 28px |
-| **搜索框宽度** | 100% | 320px | 320px |
-| **右侧时间轴** | ❌ 隐藏 | ✅ 显示 | ✅ 显示 |
-| **底部控制栏** | 全宽 | 居中 | 居中 |
-| **日记弹窗** | 全屏 | 90% 居中 | 450/550px 居中 |
-| **按钮间距** | 8-15px | 15px | 15-20px |
-| **内边距** | 12-20px | 25-35px | 25-40px |
-| **📖 提示图标** | ❌ 隐藏 | ✅ 显示 | ✅ 显示 |
+| 元素            | 移动端 (≤768px) | 平板 (769-1024px) | 桌面 (>1024px) |
+| --------------- | --------------- | ----------------- | -------------- |
+| **标题**        | 20px            | 24px              | 28px           |
+| **搜索框宽度**  | 100%            | 320px             | 320px          |
+| **右侧时间轴**  | ❌ 隐藏         | ✅ 显示           | ✅ 显示        |
+| **底部控制栏**  | 全宽            | 居中              | 居中           |
+| **日记弹窗**    | 全屏            | 90% 居中          | 450/550px 居中 |
+| **按钮间距**    | 8-15px          | 15px              | 15-20px        |
+| **内边距**      | 12-20px         | 25-35px           | 25-40px        |
+| **📖 提示图标** | ❌ 隐藏         | ✅ 显示           | ✅ 显示        |
 
 ---
 
 ## 🎨 设计原则
 
 ### 1. **移动优先 (Mobile First)**
+
 - 确保移动端核心功能完整
 - 隐藏非必要元素（如时间轴）
 - 优化触摸交互
 
 ### 2. **渐进增强 (Progressive Enhancement)**
+
 - 小屏幕：基础功能
 - 中屏幕：添加辅助功能
 - 大屏幕：完整体验
 
 ### 3. **一致性 (Consistency)**
+
 - 所有断点保持相同的交互逻辑
 - 统一的配色方案
 - 平滑的过渡动画
 
 ### 4. **性能优化 (Performance)**
+
 - 使用 CSS 媒体查询而非 JS 检测（更快）
 - 条件渲染（移动端不渲染时间轴）
 - 减少重排重绘
@@ -275,6 +301,7 @@ body {
 ## 🧪 测试设备清单
 
 ### ✅ 已测试设备
+
 - [ ] iPhone SE (375px)
 - [ ] iPhone 12/13 (390px)
 - [ ] iPhone 14 Pro Max (428px)
@@ -284,6 +311,7 @@ body {
 - [ ] Desktop 1920px
 
 ### 🔧 测试方法
+
 1. Chrome DevTools (F12 → Device Toolbar)
 2. Firefox Responsive Design Mode
 3. Safari Web Inspector
@@ -294,6 +322,7 @@ body {
 ## 🚀 使用方式
 
 ### 开发者
+
 ```bash
 # 开发模式（支持热更新）
 npm run dev
@@ -307,6 +336,7 @@ http://YOUR_IP:5173
 ```
 
 ### 用户体验
+
 - **移动端**: 单手操作，底部控制
 - **平板**: 双手操作，保留时间轴
 - **桌面**: 完整功能，最佳体验
@@ -316,12 +346,15 @@ http://YOUR_IP:5173
 ## 📝 后续优化建议
 
 ### 🔜 待添加功能
+
 1. **触摸手势支持**
+
    - 左右滑动切换城市
    - 双指缩放地球
    - 长按显示详情
 
 2. **性能优化**
+
    - 移动端减少 Globe 粒子数
    - 懒加载照片
    - 虚拟滚动（长时间轴）
@@ -336,10 +369,13 @@ http://YOUR_IP:5173
 ## 🎯 关键技术点
 
 ### React Hooks 实现
+
 ```jsx
 // 实时监听窗口大小
 const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-const [isTablet, setIsTablet] = useState(window.innerWidth > 768 && window.innerWidth <= 1024);
+const [isTablet, setIsTablet] = useState(
+  window.innerWidth > 768 && window.innerWidth <= 1024
+);
 
 useEffect(() => {
   const handleResize = () => {
@@ -347,24 +383,28 @@ useEffect(() => {
     setIsMobile(width <= 768);
     setIsTablet(width > 768 && width <= 1024);
   };
-  
-  window.addEventListener('resize', handleResize);
-  return () => window.removeEventListener('resize', handleResize);
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
 }, []);
 ```
 
 ### 条件渲染
+
 ```jsx
 // 移动端隐藏时间轴
-{!isMobile && (
-  <Timeline data={TRAVEL_DATA} />
-)}
+{
+  !isMobile && <Timeline data={TRAVEL_DATA} />;
+}
 
 // 移动端隐藏提示图标
-{!isMobile && <span>📖</span>}
+{
+  !isMobile && <span>📖</span>;
+}
 ```
 
 ### 响应式样式
+
 ```jsx
 style={{
   fontSize: isMobile ? '14px' : isTablet ? '16px' : '18px',

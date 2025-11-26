@@ -8,26 +8,26 @@ export const COUNTRIES = {
     zh: "中国",
     en: "China",
     code: "🇨🇳",
-    continent: "Asia"
+    continent: "Asia",
   },
   THAILAND: {
     zh: "泰国",
     en: "Thailand",
     code: "🇹🇭",
-    continent: "Asia"
+    continent: "Asia",
   },
   USA: {
     zh: "美国",
     en: "USA",
     code: "🇺🇸",
-    continent: "North America"
+    continent: "North America",
   },
   CANADA: {
     zh: "加拿大",
     en: "Canada",
     code: "🇨🇦",
-    continent: "North America"
-  }
+    continent: "North America",
+  },
 };
 
 /**
