@@ -214,7 +214,22 @@ const Atlas = () => {
   const [showStats, setShowStats] = useState(false);
   const [theme, setTheme] = useState('dark'); // 'dark' or 'light'
   const [showTip, setShowTip] = useState(true); // 使用提示
-  const autoPlayIntervalRef = useRef(null); 
+  const autoPlayIntervalRef = useRef(null);
+  
+  // 响应式设计 - 媒体查询
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isTablet, setIsTablet] = useState(window.innerWidth > 768 && window.innerWidth <= 1024);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      setIsTablet(width > 768 && width <= 1024);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); 
   // --- 过滤逻辑 (支持中英双语语义搜索) ---
   const filteredData = useMemo(() => {
     if (!searchQuery) return TRAVEL_DATA;
@@ -400,13 +415,31 @@ const Atlas = () => {
       />
 
       {/* A. 顶部栏：标题 + 搜索 + 语言切换 + 新功能按钮 */}
-      <div style={{ position: 'fixed', top: '40px', left: '40px', zIndex: 100, pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', pointerEvents: 'auto', flexWrap: 'wrap' }}>
+      <div style={{ 
+        position: 'fixed', 
+        top: isMobile ? '15px' : '40px', 
+        left: isMobile ? '15px' : '40px', 
+        right: isMobile ? '15px' : 'auto',
+        zIndex: 100, 
+        pointerEvents: 'none', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: isMobile ? '10px' : '15px' 
+      }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: isMobile ? '8px' : '15px', 
+          pointerEvents: 'auto', 
+          flexWrap: 'wrap',
+          justifyContent: isMobile ? 'space-between' : 'flex-start'
+        }}>
           <h1 style={{ 
             color: theme === 'dark' ? 'white' : '#2c3e50', 
             fontFamily: 'serif', 
             margin: 0, 
-            textShadow: theme === 'dark' ? '0 0 10px rgba(255,255,255,0.5)' : '0 2px 4px rgba(0,0,0,0.1)' 
+            textShadow: theme === 'dark' ? '0 0 10px rgba(255,255,255,0.5)' : '0 2px 4px rgba(0,0,0,0.1)',
+            fontSize: isMobile ? '20px' : isTablet ? '24px' : '28px'
           }}>
             {lang === 'zh' ? '时空足迹' : 'THE JOURNEY'}
           </h1>
@@ -418,10 +451,10 @@ const Atlas = () => {
               background: 'rgba(255,255,255,0.1)', 
               border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
               color: theme === 'dark' ? 'white' : '#2c3e50', 
-              padding: '5px 10px', 
+              padding: isMobile ? '4px 8px' : '5px 10px', 
               borderRadius: '4px', 
               cursor: 'pointer',
-              fontSize: '12px', 
+              fontSize: isMobile ? '11px' : '12px', 
               fontWeight: 'bold',
               transition: 'all 0.3s'
             }}
@@ -484,15 +517,15 @@ const Atlas = () => {
           </button>
         </div>
 
-        <div style={{ position: 'relative', pointerEvents: 'auto' }}>
-          <div style={{ position: 'relative', display: 'inline-block' }}>
+        <div style={{ position: 'relative', pointerEvents: 'auto', width: isMobile ? '100%' : 'auto' }}>
+          <div style={{ position: 'relative', display: 'inline-block', width: isMobile ? '100%' : 'auto' }}>
             {/* 搜索图标 */}
             <span style={{
               position: 'absolute',
-              left: '18px',
+              left: isMobile ? '14px' : '18px',
               top: '50%',
               transform: 'translateY(-50%)',
-              fontSize: '16px',
+              fontSize: isMobile ? '14px' : '16px',
               opacity: 0.5,
               pointerEvents: 'none',
               zIndex: 1
@@ -512,17 +545,18 @@ const Atlas = () => {
                 boxShadow: theme === 'dark'
                   ? '0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)'
                   : '0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
-                padding: '14px 20px 14px 48px', 
-                borderRadius: '16px', 
+                padding: isMobile ? '12px 16px 12px 42px' : '14px 20px 14px 48px', 
+                borderRadius: isMobile ? '12px' : '16px', 
                 color: theme === 'dark' ? 'white' : '#2c3e50', 
-                width: '320px',
+                width: isMobile ? '100%' : '320px',
                 outline: 'none', 
                 backdropFilter: 'blur(20px)',
-                fontSize: '15px',
+                fontSize: isMobile ? '14px' : '15px',
                 fontWeight: '400',
                 letterSpacing: '0.2px',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                WebkitFontSmoothing: 'antialiased'
+                WebkitFontSmoothing: 'antialiased',
+                boxSizing: 'border-box'
               }}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
@@ -659,21 +693,31 @@ const Atlas = () => {
         </AnimatePresence>
       </div>
       
-      {/* B. 右侧时间轴 - 可点击打开日记 */}
-      <div style={{ 
-        position: 'fixed', top: '50%', right: '20px', transform: 'translateY(-50%)', 
-        zIndex: 100, display: 'flex', flexDirection: 'column', gap: '15px', 
-        maxHeight: '80vh', overflowY: 'auto', pointerEvents: 'none', paddingRight: '10px'
-      }}>
-        {TRAVEL_DATA.map((item, index) => (
-          <div 
-            key={item.id}
-            onClick={() => {
-              setTimelineIdx(index);
-              // 双击打开日记
-              if (index === timelineIdx) {
-                setSelectedLoc(item);
-              }
+      {/* B. 右侧时间轴 - 可点击打开日记 (移动端隐藏) */}
+      {!isMobile && (
+        <div style={{ 
+          position: 'fixed', 
+          top: '50%', 
+          right: isTablet ? '10px' : '20px', 
+          transform: 'translateY(-50%)', 
+          zIndex: 100, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: isTablet ? '12px' : '15px', 
+          maxHeight: '80vh', 
+          overflowY: 'auto', 
+          pointerEvents: 'none', 
+          paddingRight: '10px'
+        }}>
+          {TRAVEL_DATA.map((item, index) => (
+            <div 
+              key={item.id}
+              onClick={() => {
+                setTimelineIdx(index);
+                // 双击打开日记
+                if (index === timelineIdx) {
+                  setSelectedLoc(item);
+                }
             }}
             onDoubleClick={() => {
               setTimelineIdx(index);
@@ -728,23 +772,34 @@ const Atlas = () => {
             }}></div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
 
       {/* C. 底部控制条 - 带国家标识 + 可点击城市名打开日记 */}
       <div style={{ 
-        position: 'fixed', bottom: '40px', left: '50%', transform: 'translateX(-50%)', 
-        zIndex: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+        position: 'fixed', 
+        bottom: isMobile ? '20px' : '40px', 
+        left: isMobile ? '15px' : '50%', 
+        right: isMobile ? '15px' : 'auto',
+        transform: isMobile ? 'none' : 'translateX(-50%)', 
+        zIndex: 100, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        gap: isMobile ? '6px' : '8px',
         background: theme === 'dark' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.8)', 
-        padding: '15px 25px', 
-        borderRadius: '20px',
+        padding: isMobile ? '12px 18px' : '15px 25px', 
+        borderRadius: isMobile ? '16px' : '20px',
         backdropFilter: 'blur(10px)', 
         border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
         transition: 'all 0.3s',
-        minWidth: '280px'
+        minWidth: isMobile ? 'auto' : '280px',
+        width: isMobile ? '100%' : 'auto',
+        boxSizing: 'border-box'
       }}>
         {/* 国家标识 - 顶部 */}
         <div style={{
-          fontSize: '11px',
+          fontSize: isMobile ? '10px' : '11px',
           color: theme === 'dark' ? '#999' : '#666',
           letterSpacing: '1px',
           textTransform: 'uppercase',
@@ -753,7 +808,7 @@ const Atlas = () => {
           alignItems: 'center',
           gap: '6px'
         }}>
-          <span style={{ fontSize: '16px' }}>{TRAVEL_DATA[timelineIdx].country.code}</span>
+          <span style={{ fontSize: isMobile ? '14px' : '16px' }}>{TRAVEL_DATA[timelineIdx].country.code}</span>
           <span>{TRAVEL_DATA[timelineIdx].country[lang]}</span>
         </div>
         
@@ -761,7 +816,7 @@ const Atlas = () => {
         <div style={{ 
           display: 'flex', 
           alignItems: 'center', 
-          gap: '20px',
+          gap: isMobile ? '15px' : '20px',
           width: '100%',
           justifyContent: 'center'
         }}>
@@ -790,8 +845,8 @@ const Atlas = () => {
               flexDirection: 'column',
               gap: '4px',
               cursor: 'pointer',
-              padding: '8px 16px',
-              borderRadius: '12px',
+              padding: isMobile ? '6px 12px' : '8px 16px',
+              borderRadius: isMobile ? '10px' : '12px',
               transition: 'all 0.3s',
               position: 'relative'
             }}
@@ -805,22 +860,24 @@ const Atlas = () => {
             }}
             title={lang === 'zh' ? '📖 点击查看旅行日记' : '📖 Click to view travel diary'}
           >
-            <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
+            <div style={{ fontSize: isMobile ? '16px' : '18px', fontWeight: 'bold' }}>
               {TRAVEL_DATA[timelineIdx].city[lang]}
             </div>
-            <div style={{ fontSize: '12px', opacity: 0.7 }}>
+            <div style={{ fontSize: isMobile ? '11px' : '12px', opacity: 0.7 }}>
               {TRAVEL_DATA[timelineIdx].date}
             </div>
             {/* 悬浮提示图标 */}
-            <div style={{
-              position: 'absolute',
-              top: '-8px',
-              right: '-8px',
-              fontSize: '14px',
-              animation: 'pulse 2s infinite'
-            }}>
-              📖
-            </div>
+            {!isMobile && (
+              <div style={{
+                position: 'absolute',
+                top: '-8px',
+                right: '-8px',
+                fontSize: '14px',
+                animation: 'pulse 2s infinite'
+              }}>
+                📖
+              </div>
+            )}
           </div>
           
           <button 
@@ -831,7 +888,7 @@ const Atlas = () => {
               border: 'none', 
               color: theme === 'dark' ? 'white' : '#2c3e50', 
               cursor: timelineIdx === TRAVEL_DATA.length - 1 ? 'not-allowed' : 'pointer', 
-              fontSize: '20px',
+              fontSize: isMobile ? '18px' : '20px',
               opacity: timelineIdx === TRAVEL_DATA.length - 1 ? 0.3 : 1,
               transition: 'all 0.2s'
             }}>
@@ -849,33 +906,37 @@ const Atlas = () => {
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             style={{
               position: 'fixed', 
-              top: '50%', 
-              left: '50%', 
-              transform: 'translate(-50%, -50%)',
-              width: selectedLoc.photos && selectedLoc.photos.length > 0 ? '550px' : '450px',
-              maxHeight: '85vh',
+              top: isMobile ? '0' : '50%', 
+              left: isMobile ? '0' : '50%', 
+              right: isMobile ? '0' : 'auto',
+              bottom: isMobile ? '0' : 'auto',
+              transform: isMobile ? 'none' : 'translate(-50%, -50%)',
+              width: isMobile ? '100%' : (selectedLoc.photos && selectedLoc.photos.length > 0 ? (isTablet ? '90%' : '550px') : (isTablet ? '80%' : '450px')),
+              maxWidth: isMobile ? 'none' : '90vw',
+              maxHeight: isMobile ? '100vh' : '85vh',
               overflowY: 'auto',
               background: theme === 'dark' ? '#1a1a1a' : '#ffffff',
-              border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
-              borderRadius: '12px', 
-              padding: '40px', 
+              border: isMobile ? 'none' : `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+              borderRadius: isMobile ? '0' : '12px', 
+              padding: isMobile ? '30px 20px' : (isTablet ? '35px 25px' : '40px'), 
               zIndex: 200, 
               color: theme === 'dark' ? '#e0e0e0' : '#2c3e50',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)'
+              boxShadow: isMobile ? 'none' : '0 25px 50px -12px rgba(0, 0, 0, 0.7)'
             }}
           >
             <button 
               onClick={() => setSelectedLoc(null)} 
               style={{ 
                 position: 'absolute', 
-                top: '20px', 
-                right: '20px', 
+                top: isMobile ? '15px' : '20px', 
+                right: isMobile ? '15px' : '20px', 
                 background: 'transparent', 
                 border: 'none', 
                 color: theme === 'dark' ? '#666' : '#999', 
                 cursor: 'pointer', 
-                fontSize: '24px',
-                transition: 'color 0.3s'
+                fontSize: isMobile ? '28px' : '24px',
+                transition: 'color 0.3s',
+                zIndex: 1
               }}
               onMouseOver={(e) => e.currentTarget.style.color = theme === 'dark' ? '#fff' : '#333'}
               onMouseOut={(e) => e.currentTarget.style.color = theme === 'dark' ? '#666' : '#999'}
@@ -886,11 +947,11 @@ const Atlas = () => {
             {/* 照片画廊 */}
             {selectedLoc.photos && selectedLoc.photos.length > 0 && (
               <div style={{ 
-                marginBottom: '25px', 
+                marginBottom: isMobile ? '20px' : '25px', 
                 borderRadius: '8px', 
                 overflow: 'hidden',
                 display: 'grid',
-                gridTemplateColumns: selectedLoc.photos.length === 1 ? '1fr' : 'repeat(2, 1fr)',
+                gridTemplateColumns: (isMobile || selectedLoc.photos.length === 1) ? '1fr' : 'repeat(2, 1fr)',
                 gap: '10px'
               }}>
                 {selectedLoc.photos.map((photo, idx) => (
@@ -1057,51 +1118,52 @@ const Atlas = () => {
             exit={{ opacity: 0, y: 50 }}
             style={{
               position: 'fixed',
-              bottom: '120px',
-              left: '50%',
-              transform: 'translateX(-50%)',
+              bottom: isMobile ? '100px' : '120px',
+              left: isMobile ? '15px' : '50%',
+              right: isMobile ? '15px' : 'auto',
+              transform: isMobile ? 'none' : 'translateX(-50%)',
               zIndex: 200,
               background: theme === 'dark' 
                 ? 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,235,59,0.1))' 
                 : 'linear-gradient(135deg, rgba(100,150,255,0.15), rgba(150,200,255,0.1))',
               backdropFilter: 'blur(20px)',
               border: `2px solid ${theme === 'dark' ? 'rgba(255,215,0,0.3)' : 'rgba(100,150,255,0.3)'}`,
-              borderRadius: '16px',
-              padding: '20px 30px',
+              borderRadius: isMobile ? '12px' : '16px',
+              padding: isMobile ? '16px 20px' : '20px 30px',
               boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
-              maxWidth: '400px',
+              maxWidth: isMobile ? 'none' : '400px',
               animation: 'bounce 2s infinite'
             }}
           >
             <div style={{
               color: theme === 'dark' ? '#fff' : '#2c3e50',
-              fontSize: '16px',
+              fontSize: isMobile ? '14px' : '16px',
               fontWeight: '500',
-              marginBottom: '12px',
+              marginBottom: isMobile ? '10px' : '12px',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
             }}>
-              <span style={{ fontSize: '24px' }}>💡</span>
+              <span style={{ fontSize: isMobile ? '20px' : '24px' }}>💡</span>
               <span>{lang === 'zh' ? '如何查看旅行日记？' : 'How to view diary?'}</span>
             </div>
             
             <div style={{
               color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)',
-              fontSize: '14px',
+              fontSize: isMobile ? '13px' : '14px',
               lineHeight: '1.6',
-              marginBottom: '15px'
+              marginBottom: isMobile ? '12px' : '15px'
             }}>
               {lang === 'zh' ? (
                 <>
                   <div>📖 <strong>点击底部城市名称</strong></div>
-                  <div>📍 <strong>双击右侧时间轴</strong></div>
+                  {!isMobile && <div>📍 <strong>双击右侧时间轴</strong></div>}
                   <div>🌍 <strong>点击地球上的标记点</strong></div>
                 </>
               ) : (
                 <>
                   <div>📖 <strong>Click city name below</strong></div>
-                  <div>📍 <strong>Double-click timeline</strong></div>
+                  {!isMobile && <div>📍 <strong>Double-click timeline</strong></div>}
                   <div>🌍 <strong>Click marks on globe</strong></div>
                 </>
               )}
