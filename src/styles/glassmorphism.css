@@ -1,0 +1,1214 @@
+/*/* ============================================
+   🚀 Perfect Minimalist Sci-Fi Navigation
+   ============================================ */
+
+.immersive-navbar {
+  /* Positioning - Floating */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  
+  /* Transparent Background - Show starfield */
+  background: transparent;
+  
+  /* Layout - Split Left & Right */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* Breathing Room */
+  padding: 24px 40px;
+  
+  /* Transition */
+  transition: all var(--transition-base);
+}
+
+/* Left Group - Brand */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Epic Title Styles */
+.epic-title-en {
+  /* Typography */
+  font-family: 'Montserrat', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  
+  /* Color */
+  color: #FFFFFF;
+  
+  /* No margin */
+  margin: 0;
+  
+  /* Text glow effect */
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  
+  /* Smooth transition */
+  transition: text-shadow var(--transition-base);
+}
+
+.epic-title-en:hover {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+.epic-title-zh {
+  /* Modern Chinese Sans-Serif */
+  font-family: 'PingFang SC', 'Source Han Sans CN', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  
+  /* Color */
+  color: #FFFFFF;
+  
+  /* No margin */
+  margin: 0;
+  
+  /* Text glow effect */
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  
+  /* Smooth transition */
+  transition: text-shadow var(--transition-base);
+}
+
+.epic-title-zh:hover {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+/* Language Switcher - Minimalist Text */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.lang-option {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all var(--transition-base);
+}
+
+.lang-option.active {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.lang-option:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.lang-divider {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}
+
+/* Right Group - Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Minimalist Icon Button - White Outline */
+.minimalist-icon {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all var(--transition-base);
+  position: relative;
+  padding: 0;
+}
+
+/* Hover Glow Effect */
+.minimalist-icon:hover {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  transform: scale(1.1);
+}
+
+.minimalist-icon:active {
+  transform: scale(0.95);
+}
+
+/* Active State - Stronger Glow */
+.minimalist-icon.active {
+  filter: drop-shadow(0 0 16px rgba(102, 126, 234, 1));
+}
+
+/* Search Container - Minimalist */
+.minimalist-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all var(--transition-base);
+}
+
+.minimalist-search-collapsed {
+  width: 40px;
+}
+
+.minimalist-search-expanded {
+  width: 280px;
+}
+
+.minimalist-search-icon {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all var(--transition-base);
+  position: absolute;
+  left: 0;
+  z-index: 2;
+}
+
+.minimalist-search-icon:hover {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  transform: scale(1.1);
+}
+
+.minimalist-search-input {
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 0 40px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  outline: none;
+  transition: all var(--transition-base);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.minimalist-search-expanded .minimalist-search-input {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.minimalist-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.minimalist-search-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.minimalist-search-close {
+  position: absolute;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.minimalist-search-expanded .minimalist-search-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.minimalist-search-close:hover {
+  color: #FFFFFF;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+/* SVG Icon Styles - White Outline */
+.icon-svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .immersive-navbar {
+    padding: 16px 20px;
+  }
+  
+  .epic-title-en {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  
+  .epic-title-zh {
+    font-size: 17px;
+    letter-spacing: 1px;
+  }
+  
+  .navbar-actions {
+    gap: 16px;
+  }
+  
+  .minimalist-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  
+  .minimalist-search-expanded {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .immersive-navbar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .navbar-brand {
+    gap: 12px;
+  }
+  
+  .epic-title-en {
+    font-size: 16px;
+    letter-spacing: 1.5px;
+  }
+  
+  .epic-title-zh {
+    font-size: 15px;
+  }
+  
+  .navbar-actions {
+    gap: 12px;
+  }
+  
+  .minimalist-search-expanded {
+    width: 150px;
+  }
+}
+
+/* ============================================
+   � Apple Vision Pro Style Navigation
+
+/* ============================================
+   � Apple Vision Pro Style Navigation
+   ============================================ */
+
+.vision-navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  
+  /* Glassmorphism */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  
+  /* Border */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  
+  /* Shadow */
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  /* Layout */
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+  min-height: 60px;
+  
+  /* Transition */
+  transition: all var(--transition-base);
+}
+
+.vision-navbar:hover {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Logo */
+.vision-logo {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: white;
+  margin: 0;
+  white-space: nowrap;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Divider */
+.vision-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Icon Group */
+.vision-icon-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon Button */
+.vision-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-icon-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.vision-icon-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+.vision-icon-btn:hover::before {
+  opacity: 1;
+}
+
+.vision-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* Active state */
+.vision-icon-btn.active {
+  color: white;
+  box-shadow: 
+    0 0 20px var(--color-primary-glow),
+    inset 0 0 20px var(--color-primary-glow);
+}
+
+.vision-icon-btn.active::before {
+  background: linear-gradient(135deg, 
+    var(--color-primary-start), 
+    var(--color-primary-end)
+  );
+  opacity: 0.3;
+}
+
+/* Search Container */
+.vision-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all var(--transition-base);
+}
+
+.vision-search-collapsed {
+  width: 36px;
+}
+
+.vision-search-expanded {
+  width: 300px;
+}
+
+.vision-search-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  position: absolute;
+  left: 0;
+  z-index: 2;
+}
+
+.vision-search-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+.vision-search-input {
+  width: 100%;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0 40px 0 40px;
+  color: white;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+  outline: none;
+  transition: all var(--transition-base);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vision-search-expanded .vision-search-input {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.vision-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.vision-search-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.vision-search-close {
+  position: absolute;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vision-search-expanded .vision-search-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.vision-search-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Language Toggle */
+.vision-lang-toggle {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-transform: uppercase;
+}
+
+.vision-lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.vision-lang-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .vision-navbar {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    transform: none;
+    padding: 10px 16px;
+    gap: 12px;
+    border-radius: 16px;
+  }
+  
+  .vision-logo {
+    font-size: 16px;
+  }
+  
+  .vision-icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .vision-search-expanded {
+    width: 200px;
+  }
+  
+  .vision-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .vision-navbar {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  
+  .vision-logo {
+    font-size: 14px;
+  }
+  
+  .vision-icon-group {
+    gap: 4px;
+  }
+  
+  .vision-search-expanded {
+    width: 150px;
+  }
+}
+
+/* ============================================
+   �🌟 Base Glass Components
+   ============================================ */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow-md);
+  transition: all var(--transition-base);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--glass-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+/* ============================================
+   🔘 Glass Buttons
+   ============================================ */
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-medium);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left var(--transition-slow);
+}
+
+.glass-button:hover::before {
+  left: 100%;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.glass-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Primary Button */
+.glass-button-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-start),
+    var(--color-primary-end)
+  );
+  border-color: transparent;
+  box-shadow: 0 4px 12px var(--color-primary-glow);
+}
+
+.glass-button-primary:hover {
+  box-shadow: 0 8px 20px var(--color-primary-glow);
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* Secondary Button */
+.glass-button-secondary {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-start),
+    var(--color-secondary-end)
+  );
+  border-color: transparent;
+  box-shadow: 0 4px 12px var(--color-secondary-glow);
+}
+
+.glass-button-secondary:hover {
+  box-shadow: 0 8px 20px var(--color-secondary-glow);
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* Accent Button */
+.glass-button-accent {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-start),
+    var(--color-accent-end)
+  );
+  border-color: transparent;
+  box-shadow: 0 4px 12px var(--color-accent-glow);
+}
+
+/* Icon Button */
+.glass-button-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-lg);
+}
+
+/* ============================================
+   🔍 Glass Search Input
+   ============================================ */
+
+.glass-search {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.glass-search-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  padding-left: 3rem;
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.9);
+  transition: all var(--transition-base);
+  outline: none;
+}
+
+.glass-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.glass-search-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-primary-start);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+.glass-search-icon {
+  position: absolute;
+  left: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: var(--font-size-lg);
+  pointer-events: none;
+}
+
+/* ============================================
+   📊 Glass Statistics Panel
+   ============================================ */
+
+.glass-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.glass-stat-item {
+  text-align: center;
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.glass-stat-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+.glass-stat-number {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-bold);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-start),
+    var(--color-secondary-start)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-stat-label {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   🎯 Glass Filter Panel
+   ============================================ */
+
+.glass-filter-group {
+  margin-bottom: var(--space-lg);
+}
+
+.glass-filter-label {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.glass-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.glass-filter-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.glass-filter-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+}
+
+.glass-filter-button.active {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-start),
+    var(--color-primary-end)
+  );
+  border-color: transparent;
+  color: white;
+  font-weight: var(--font-semibold);
+  box-shadow: 0 4px 12px var(--color-primary-glow);
+}
+
+/* ============================================
+   📍 Glass Timeline
+   ============================================ */
+
+.glass-timeline {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding: var(--space-md);
+}
+
+/* Custom Scrollbar */
+.glass-timeline::-webkit-scrollbar {
+  width: 6px;
+}
+
+.glass-timeline::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.glass-timeline::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-start),
+    var(--color-primary-end)
+  );
+  border-radius: var(--radius-sm);
+}
+
+.glass-timeline-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-start),
+    var(--color-primary-end)
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.glass-timeline-item:hover::before,
+.glass-timeline-item.active::before {
+  opacity: 1;
+}
+
+.glass-timeline-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.glass-timeline-item.active {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary-start);
+}
+
+/* ============================================
+   💬 Glass Modal/Dialog
+   ============================================ */
+
+.glass-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.glass-modal {
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.glass-modal-header {
+  padding: var(--space-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.glass-modal-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-bold);
+  color: white;
+}
+
+.glass-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-modal-close:hover {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: var(--color-accent-start);
+  color: var(--color-accent-start);
+  transform: rotate(90deg);
+}
+
+.glass-modal-body {
+  padding: var(--space-xl);
+  overflow-y: auto;
+  max-height: calc(90vh - 120px);
+}
+
+/* ============================================
+   🏷️ Glass Badge/Tag
+   ============================================ */
+
+.glass-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-medium);
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+}
+
+.glass-badge-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.2),
+    rgba(118, 75, 162, 0.2)
+  );
+  border-color: var(--color-primary-start);
+  color: var(--color-primary-start);
+}
+
+.glass-badge-secondary {
+  background: linear-gradient(
+    135deg,
+    rgba(29, 209, 161, 0.2),
+    rgba(16, 172, 132, 0.2)
+  );
+  border-color: var(--color-secondary-start);
+  color: var(--color-secondary-start);
+}
+
+/* ============================================
+   🌟 Glass Floating Card
+   ============================================ */
+
+.glass-floating-card {
+  position: absolute;
+  background: rgba(20, 20, 30, 0.9);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  padding: var(--space-lg);
+  z-index: 100;
+  animation: floatIn 0.3s ease-out;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================
+   🎨 Deep Space Background
+   ============================================ */
+
+.deep-space-bg {
+  background: radial-gradient(
+    ellipse at top,
+    #1a1a2e 0%,
+    #0f0f1e 50%,
+    #000000 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.deep-space-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(29, 209, 161, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(255, 107, 107, 0.02) 0%, transparent 50%);
+  animation: cosmicDrift 60s linear infinite;
+}
+
+@keyframes cosmicDrift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(10%, 10%) rotate(360deg); }
+}
+
+/* ============================================
+   📱 Responsive Utilities
+   ============================================ */
+
+@media (max-width: 768px) {
+  .glass-card,
+  .glass-panel {
+    border-radius: var(--radius-md);
+  }
+  
+  .glass-modal {
+    max-width: 95vw;
+    border-radius: var(--radius-lg);
+  }
+  
+  .glass-search {
+    max-width: 100%;
+  }
+  
+  .glass-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+    padding: var(--space-md);
+  }
+}
+
+/* ============================================
+   ♿ Accessibility
+   ============================================ */
+
+.glass-button:focus-visible,
+.glass-filter-button:focus-visible,
+.glass-search-input:focus-visible {
+  outline: 2px solid var(--color-primary-start);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

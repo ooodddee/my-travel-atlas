@@ -1,42 +1,81 @@
+/* 🎨 Design System - Premium Glassmorphism */
+
+/* Color Palette - Inspired by Apple & Stripe */
+:root {
+  /* Primary - Purple Gradient */
+  --color-primary-start: #667eea;
+  --color-primary-end: #764ba2;
+  --color-primary-glow: rgba(102, 126, 234, 0.4);
+  
+  /* Secondary - Emerald */
+  --color-secondary-start: #1dd1a1;
+  --color-secondary-end: #10ac84;
+  --color-secondary-glow: rgba(29, 209, 161, 0.3);
+  
+  /* Accent - Sunset */
+  --color-accent-start: #ff6b6b;
+  --color-accent-end: #ee5a6f;
+  --color-accent-glow: rgba(255, 107, 107, 0.3);
+  
+  /* Info - Sky */
+  --color-info-start: #48dbfb;
+  --color-info-end: #0abde3;
+  
+  /* Warning - Gold */
+  --color-warning: #feca57;
+  --color-warning-glow: rgba(254, 202, 87, 0.3);
+  
+  /* Glass Effects */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(255, 255, 255, 0.2);
+  --glass-shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --glass-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.3);
+  
+  /* Typography Scale */
+  --font-size-xs: 0.75rem;    /* 12px - captions */
+  --font-size-sm: 0.875rem;   /* 14px - body */
+  --font-size-base: 1rem;     /* 16px - base */
+  --font-size-lg: 1.125rem;   /* 18px - subtitle */
+  --font-size-xl: 1.5rem;     /* 24px - heading */
+  --font-size-2xl: 1.75rem;   /* 28px - large heading */
+  --font-size-3xl: 2.25rem;   /* 36px - hero */
+  
+  /* Font Weights */
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Globe from 'react-globe.gl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TRAVEL_DATA } from '../data/travelData.js';
+import { TRAVEL_DATA, getUniqueCountries, getUniqueYears } from '../data/travelData.js';
+import '../styles/glassmorphism.css';
 
 // 键盘快捷键显示组件
 const KeyboardShortcut = ({ keys, description, theme }) => (
@@ -80,9 +81,36 @@ const Atlas = () => {
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false); // 键盘快捷键帮助
   const autoPlayIntervalRef = useRef(null);
   
+  // 加载状态
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  
+  // 筛选状态
+  const [selectedYear, setSelectedYear] = useState('all');
+  const [selectedCountry, setSelectedCountry] = useState('all');
+  const [showFilters, setShowFilters] = useState(false);
+  
+  // Vision Pro 导航栏状态
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  
   // 响应式设计 - 媒体查询
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isTablet, setIsTablet] = useState(window.innerWidth > 768 && window.innerWidth <= 1024);
+  
+  // 模拟加载进度
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(timer);
+          return prev;
+        }
+        return prev + 10;
+      });
+    }, 200);
+    
+    return () => clearInterval(timer);
+  }, []);
   
   useEffect(() => {
     const handleResize = () => {
@@ -94,17 +122,33 @@ const Atlas = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []); 
-  // --- 过滤逻辑 (支持中英双语语义搜索) ---
+  
+  // --- 过滤逻辑 (支持搜索 + 年份 + 国家筛选) ---
   const filteredData = useMemo(() => {
-    if (!searchQuery) return TRAVEL_DATA;
-    const lowerQuery = searchQuery.toLowerCase();
-    return TRAVEL_DATA.filter(loc => {
-      // 搜索匹配：城市名(中/英) 或 Tags
-      return loc.city.zh.includes(lowerQuery) || 
-             loc.city.en.toLowerCase().includes(lowerQuery) ||
-             loc.aiTags.some(tag => tag.toLowerCase().includes(lowerQuery));
-    });
-  }, [searchQuery]);
+    let data = TRAVEL_DATA;
+    
+    // 1. 年份筛选
+    if (selectedYear !== 'all') {
+      data = data.filter(loc => loc.date.startsWith(selectedYear));
+    }
+    
+    // 2. 国家筛选
+    if (selectedCountry !== 'all') {
+      data = data.filter(loc => loc.country.en === selectedCountry);
+    }
+    
+    // 3. 搜索筛选（城市名或标签）
+    if (searchQuery) {
+      const lowerQuery = searchQuery.toLowerCase();
+      data = data.filter(loc => {
+        return loc.city.zh.includes(lowerQuery) || 
+               loc.city.en.toLowerCase().includes(lowerQuery) ||
+               loc.aiTags.some(tag => tag.toLowerCase().includes(lowerQuery));
+      });
+    }
+    
+    return data;
+  }, [searchQuery, selectedYear, selectedCountry]);
 
   // --- 统计数据计算 ---
   const stats = useMemo(() => {
@@ -317,12 +361,140 @@ const Atlas = () => {
   };
 
   return (
-    <div style={{ 
+    <div className="deep-space-bg" style={{ 
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
-      background: theme === 'dark' ? '#050505' : '#e8f4f8', 
       overflow: 'hidden', zIndex: 0,
       transition: 'background 0.5s ease'
     }}>
+      
+      {/* 加载屏幕 - Loading Screen */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: theme === 'dark' 
+                ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)'
+                : 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10000,
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            {/* 旋转地球图标 */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ 
+                duration: 3, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
+              style={{
+                fontSize: isMobile ? '80px' : '120px',
+                marginBottom: '30px',
+                filter: 'drop-shadow(0 0 20px rgba(255,255,255,0.3))'
+              }}
+            >
+              🌍
+            </motion.div>
+            
+            {/* 标题 */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                color: '#fff',
+                fontSize: isMobile ? '24px' : '32px',
+                fontWeight: 'bold',
+                marginBottom: '10px',
+                textAlign: 'center',
+                textShadow: '0 2px 10px rgba(0,0,0,0.3)'
+              }}
+            >
+              ✈️ My Travel Atlas
+            </motion.h1>
+            
+            {/* 副标题 */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: isMobile ? '14px' : '16px',
+                marginBottom: '40px',
+                textAlign: 'center'
+              }}
+            >
+              {lang === 'zh' ? '加载旅行回忆中...' : 'Loading travel memories...'}
+            </motion.p>
+            
+            {/* 进度条 */}
+            <div style={{
+              width: isMobile ? '80%' : '300px',
+              height: '4px',
+              background: 'rgba(255,255,255,0.2)',
+              borderRadius: '2px',
+              overflow: 'hidden',
+              marginBottom: '10px'
+            }}>
+              <motion.div
+                initial={{ width: '0%' }}
+                animate={{ width: `${loadingProgress}%` }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #667eea, #764ba2, #f093fb)',
+                  borderRadius: '2px'
+                }}
+              />
+            </div>
+            
+            {/* 进度百分比 */}
+            <motion.div
+              style={{
+                color: 'rgba(255,255,255,0.6)',
+                fontSize: '12px',
+                fontFamily: 'monospace'
+              }}
+            >
+              {loadingProgress}%
+            </motion.div>
+            
+            {/* 提示文字 */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{
+                marginTop: '30px',
+                color: 'rgba(255,255,255,0.5)',
+                fontSize: '12px',
+                textAlign: 'center'
+              }}
+            >
+              {lang === 'zh' 
+                ? '探索世界的每一个角落 🌏' 
+                : 'Exploring every corner of the world 🌏'}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <Globe
         ref={globeEl}
@@ -335,6 +507,12 @@ const Atlas = () => {
           : null
         }
         backgroundColor={theme === 'dark' ? '#050505' : '#e8f4f8'}
+        
+        // 加载完成回调
+        onGlobeReady={() => {
+          setLoadingProgress(100);
+          setTimeout(() => setIsLoading(false), 500);
+        }}
         
         // 优雅的脉冲圆环 - 更细更精致
         ringsData={filteredData.filter((_, idx) => idx <= timelineIdx)}
@@ -365,229 +543,128 @@ const Atlas = () => {
         atmosphereAltitude={0.12}
       />
 
-      {/* A. 顶部栏：标题 + 搜索 + 语言切换 + 新功能按钮 */}
-      <div style={{ 
-        position: 'fixed', 
-        top: isMobile ? '15px' : '40px', 
-        left: isMobile ? '15px' : '40px', 
-        right: isMobile ? '15px' : 'auto',
-        zIndex: 100, 
-        pointerEvents: 'none', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: isMobile ? '10px' : '15px' 
-      }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: isMobile ? '8px' : '15px', 
-          pointerEvents: 'auto', 
-          flexWrap: 'wrap',
-          justifyContent: isMobile ? 'space-between' : 'flex-start'
-        }}>
-          <h1 style={{ 
-            color: theme === 'dark' ? 'white' : '#2c3e50', 
-            fontFamily: 'serif', 
-            margin: 0, 
-            textShadow: theme === 'dark' ? '0 0 10px rgba(255,255,255,0.5)' : '0 2px 4px rgba(0,0,0,0.1)',
-            fontSize: isMobile ? '20px' : isTablet ? '24px' : '28px'
-          }}>
+      {/* 🚀 Perfect Immersive Minimalist Sci-Fi Navigation */}
+      <nav className="immersive-navbar">
+        {/* Left Group - Brand */}
+        <div className="navbar-brand">
+          {/* Epic Title */}
+          <h1 className={lang === 'zh' ? 'epic-title-zh' : 'epic-title-en'}>
             {lang === 'zh' ? '时空足迹' : 'THE JOURNEY'}
           </h1>
           
-          {/* 语言切换 */}
+          {/* Language Switcher - Minimalist Text */}
+          <div className="lang-switcher">
+            <button 
+              className={`lang-option ${lang === 'en' ? 'active' : ''}`}
+              onClick={() => setLang('en')}
+            >
+              EN
+            </button>
+            <span className="lang-divider">|</span>
+            <button 
+              className={`lang-option ${lang === 'zh' ? 'active' : ''}`}
+              onClick={() => setLang('zh')}
+            >
+              中
+            </button>
+          </div>
+        </div>
+        
+        {/* Right Group - Actions */}
+        <div className="navbar-actions">
+          {/* Theme Toggle */}
           <button 
-            onClick={() => setLang(l => l === 'zh' ? 'en' : 'zh')}
-            style={{
-              background: 'rgba(255,255,255,0.1)', 
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
-              color: theme === 'dark' ? 'white' : '#2c3e50', 
-              padding: isMobile ? '4px 8px' : '5px 10px', 
-              borderRadius: '4px', 
-              cursor: 'pointer',
-              fontSize: isMobile ? '11px' : '12px', 
-              fontWeight: 'bold',
-              transition: 'all 0.3s'
-            }}
-          >
-            {lang === 'zh' ? 'EN' : '中'}
-          </button>
-          
-          {/* 主题切换 */}
-          <button 
+            className="minimalist-icon"
             onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
-            style={{
-              background: 'rgba(255,255,255,0.1)', 
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
-              color: theme === 'dark' ? 'white' : '#2c3e50', 
-              padding: '5px 10px', 
-              borderRadius: '4px', 
-              cursor: 'pointer',
-              fontSize: '18px',
-              transition: 'all 0.3s'
-            }}
             title={lang === 'zh' ? '切换主题' : 'Toggle Theme'}
           >
-            {theme === 'dark' ? '☀️' : '🌙'}
+            {theme === 'dark' ? '☀' : '🌙'}
           </button>
           
-          {/* 统计面板切换 */}
+          {/* Stats Toggle */}
           <button 
+            className={`minimalist-icon ${showStats ? 'active' : ''}`}
             onClick={() => setShowStats(!showStats)}
-            style={{
-              background: showStats ? 'rgba(255,215,0,0.3)' : 'rgba(255,255,255,0.1)', 
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
-              color: theme === 'dark' ? 'white' : '#2c3e50', 
-              padding: '5px 10px', 
-              borderRadius: '4px', 
-              cursor: 'pointer',
-              fontSize: '18px',
-              transition: 'all 0.3s'
-            }}
             title={lang === 'zh' ? '统计数据' : 'Statistics'}
           >
             📊
           </button>
           
-          {/* 自动播放按钮 */}
+          {/* Filter Toggle */}
           <button 
-            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            style={{
-              background: isAutoPlaying ? 'rgba(255,0,0,0.3)' : 'rgba(255,255,255,0.1)', 
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
-              color: theme === 'dark' ? 'white' : '#2c3e50', 
-              padding: '5px 10px', 
-              borderRadius: '4px', 
-              cursor: 'pointer',
-              fontSize: '18px',
-              transition: 'all 0.3s'
-            }}
-            title={lang === 'zh' ? (isAutoPlaying ? '暂停播放' : '自动播放') : (isAutoPlaying ? 'Pause' : 'Auto Play')}
+            className={`minimalist-icon ${showFilters ? 'active' : ''}`}
+            onClick={() => setShowFilters(!showFilters)}
+            title={lang === 'zh' ? '筛选数据' : 'Filter Data'}
           >
-            {isAutoPlaying ? '⏸️' : '▶️'}
+            ⚡
           </button>
           
-          {/* 键盘快捷键帮助按钮 (仅桌面端显示) */}
+          {/* Auto Play Toggle */}
+          <button 
+            className={`minimalist-icon ${isAutoPlaying ? 'active' : ''}`}
+            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+            title={lang === 'zh' ? (isAutoPlaying ? '暂停播放' : '自动播放') : (isAutoPlaying ? 'Pause' : 'Auto Play')}
+          >
+            {isAutoPlaying ? '⏸' : '▶'}
+          </button>
+          
+          {/* Keyboard Shortcuts (Desktop only) */}
           {!isMobile && (
             <button 
+              className={`minimalist-icon ${showKeyboardHelp ? 'active' : ''}`}
               onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
-              style={{
-                background: showKeyboardHelp ? 'rgba(138,43,226,0.3)' : 'rgba(255,255,255,0.1)', 
-                border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}`,
-                color: theme === 'dark' ? 'white' : '#2c3e50', 
-                padding: isMobile ? '4px 8px' : '5px 10px', 
-                borderRadius: '4px', 
-                cursor: 'pointer',
-                fontSize: '18px',
-                transition: 'all 0.3s'
-              }}
-              title={lang === 'zh' ? '键盘快捷键 (按 ? 键)' : 'Keyboard Shortcuts (Press ?)'}
+              title={lang === 'zh' ? '键盘快捷键' : 'Keyboard Shortcuts'}
             >
-              ⌨️
+              ⌨
             </button>
           )}
-        </div>
-
-        <div style={{ position: 'relative', pointerEvents: 'auto', width: isMobile ? '100%' : 'auto' }}>
-          <div style={{ position: 'relative', display: 'inline-block', width: isMobile ? '100%' : 'auto' }}>
-            {/* 搜索图标 */}
-            <span style={{
-              position: 'absolute',
-              left: isMobile ? '14px' : '18px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              fontSize: isMobile ? '14px' : '16px',
-              opacity: 0.5,
-              pointerEvents: 'none',
-              zIndex: 1
-            }}>
+          
+          {/* Expandable Search */}
+          <div className={`minimalist-search-container ${isSearchExpanded ? 'minimalist-search-expanded' : 'minimalist-search-collapsed'}`}>
+            <button 
+              className="minimalist-search-icon"
+              onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+              title={lang === 'zh' ? '搜索' : 'Search'}
+            >
               🔍
-            </span>
+            </button>
             
-            {/* 搜索输入框 */}
             <input
               type="text"
+              className="minimalist-search-input"
               placeholder={lang === 'zh' ? "搜索回忆..." : "Search memories..."}
-              style={{
-                background: theme === 'dark' 
-                  ? 'rgba(255,255,255,0.05)' 
-                  : 'rgba(255,255,255,0.9)', 
-                border: 'none',
-                boxShadow: theme === 'dark'
-                  ? '0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)'
-                  : '0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
-                padding: isMobile ? '12px 16px 12px 42px' : '14px 20px 14px 48px', 
-                borderRadius: isMobile ? '12px' : '16px', 
-                color: theme === 'dark' ? 'white' : '#2c3e50', 
-                width: isMobile ? '100%' : '320px',
-                outline: 'none', 
-                backdropFilter: 'blur(20px)',
-                fontSize: isMobile ? '14px' : '15px',
-                fontWeight: '400',
-                letterSpacing: '0.2px',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                WebkitFontSmoothing: 'antialiased',
-                boxSizing: 'border-box'
-              }}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              onFocus={(e) => {
-                e.target.style.background = theme === 'dark' 
-                  ? 'rgba(255,255,255,0.08)' 
-                  : 'rgba(255,255,255,1)';
-                e.target.style.boxShadow = theme === 'dark'
-                  ? '0 8px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 0 3px rgba(255,215,0,0.15)'
-                  : '0 8px 30px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,1), 0 0 0 3px rgba(100,150,255,0.1)';
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onBlur={(e) => {
-                e.target.style.background = theme === 'dark' 
-                  ? 'rgba(255,255,255,0.05)' 
-                  : 'rgba(255,255,255,0.9)';
-                e.target.style.boxShadow = theme === 'dark'
-                  ? '0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)'
-                  : '0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)';
-                e.target.style.transform = 'translateY(0)';
-              }}
+              onFocus={() => setIsSearchExpanded(true)}
             />
             
-            {/* 清除按钮 */}
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
-                style={{
-                  position: 'absolute',
-                  right: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'rgba(128,128,128,0.2)',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: '20px',
-                  height: '20px',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  opacity: 0.6,
-                  transition: 'all 0.2s',
-                  padding: 0
+                className="minimalist-search-close"
+                onClick={() => {
+                  setSearchQuery('');
+                  setIsSearchExpanded(false);
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.opacity = '1';
-                  e.target.style.background = 'rgba(128,128,128,0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.opacity = '0.6';
-                  e.target.style.background = 'rgba(128,128,128,0.2)';
-                }}
+                title={lang === 'zh' ? '清除' : 'Clear'}
               >
                 ✕
               </button>
             )}
           </div>
         </div>
+      </nav>
+
+      {/* Floating Panels Container */}
+      <div style={{ 
+        position: 'fixed', 
+        top: '90px', 
+        left: isMobile ? '15px' : '40px',
+        zIndex: 100, 
+        pointerEvents: 'none', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: '15px' 
+      }}>
         
         {/* 统计面板 */}
         <AnimatePresence>
@@ -658,6 +735,118 @@ const Atlas = () => {
               }}>
                 <div>{lang === 'zh' ? '首次旅行' : 'First Trip'}: {stats.firstTrip}</div>
                 <div>{lang === 'zh' ? '最近旅行' : 'Latest Trip'}: {stats.latestTrip}</div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* 筛选面板 - Glass Style */}
+        <AnimatePresence>
+          {showFilters && (
+            <motion.div
+              className="glass-card"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              style={{
+                padding: '24px',
+                minWidth: '300px',
+                maxWidth: '400px',
+                pointerEvents: 'auto'
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 'var(--space-lg)'
+              }}>
+                <h3 className="glass-filter-label" style={{ 
+                  margin: 0, 
+                  fontSize: 'var(--font-size-lg)',
+                  color: 'white',
+                  fontWeight: 'var(--font-semibold)'
+                }}>
+                  {lang === 'zh' ? '🔽 筛选选项' : '🔽 Filter Options'}
+                </h3>
+                {(selectedYear !== 'all' || selectedCountry !== 'all') && (
+                  <button
+                    onClick={() => {
+                      setSelectedYear('all');
+                      setSelectedCountry('all');
+                    }}
+                    className="glass-button"
+                    style={{
+                      padding: '4px 12px',
+                      fontSize: 'var(--font-size-xs)',
+                      color: 'var(--color-accent-start)'
+                    }}
+                  >
+                    {lang === 'zh' ? '清除' : 'Clear'}
+                  </button>
+                )}
+              </div>
+              
+              {/* 年份筛选 */}
+              <div className="glass-filter-group">
+                <div className="glass-filter-label">
+                  📅 {lang === 'zh' ? '按年份' : 'By Year'}
+                </div>
+                <div className="glass-filter-buttons">
+                  <button
+                    onClick={() => setSelectedYear('all')}
+                    className={`glass-filter-button ${selectedYear === 'all' ? 'active' : ''}`}
+                  >
+                    {lang === 'zh' ? '全部' : 'All'}
+                  </button>
+                  {getUniqueYears().map(year => (
+                    <button
+                      key={year}
+                      onClick={() => setSelectedYear(year)}
+                      className={`glass-filter-button ${selectedYear === year ? 'active' : ''}`}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* 国家筛选 */}
+              <div className="glass-filter-group">
+                <div className="glass-filter-label">
+                  🌍 {lang === 'zh' ? '按国家' : 'By Country'}
+                </div>
+                <div className="glass-filter-buttons">
+                  <button
+                    onClick={() => setSelectedCountry('all')}
+                    className={`glass-filter-button ${selectedCountry === 'all' ? 'active' : ''}`}
+                  >
+                    {lang === 'zh' ? '全部' : 'All'}
+                  </button>
+                  {getUniqueCountries().map(country => (
+                    <button
+                      key={country.en}
+                      onClick={() => setSelectedCountry(country.en)}
+                      className={`glass-filter-button ${selectedCountry === country.en ? 'active' : ''}`}
+                    >
+                      {country.code} {lang === 'zh' ? country.zh : country.en}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* 筛选结果提示 */}
+              <div style={{
+                marginTop: 'var(--space-lg)',
+                paddingTop: 'var(--space-lg)',
+                borderTop: '1px solid rgba(255,255,255,0.1)',
+                fontSize: 'var(--font-size-xs)',
+                color: 'rgba(255,255,255,0.6)',
+                textAlign: 'center'
+              }}>
+                {lang === 'zh' 
+                  ? `显示 ${filteredData.length} / ${TRAVEL_DATA.length} 条记录`
+                  : `Showing ${filteredData.length} / ${TRAVEL_DATA.length} trips`}
               </div>
             </motion.div>
           )}
